@@ -1,0 +1,155 @@
+//
+//  ViewController.swift
+//  CalisCore
+//
+//  Created by  Alexander Fedoseev on 15.09.2026.
+//
+
+import UIKit
+
+final class SetupViewController: UIViewController {
+    
+    private let viewModel: SetupViewModelProtocol = SetupViewModel()
+    
+    private let durationSlider: UISlider = {
+        let slider = UISlider()
+        slider.minimumValue = Float(WorkoutModelConstants.workoutDurationMin)
+        slider.maximumValue = Float(WorkoutModelConstants.workoutDurationMax)
+        slider.isContinuous = true
+        slider.minimumTrackTintColor = UIColor(named: AppConstants.Colors.sliderActive)
+        slider.maximumTrackTintColor = UIColor(named: AppConstants.Colors.sliderUnactive)
+        return slider
+    }()
+
+    private let exercisesSlider: UISlider = {
+        let slider = UISlider()
+        slider.minimumValue = Float(WorkoutModelConstants.exercisesCountMin)
+        slider.maximumValue = Float(WorkoutModelConstants.exercisesCountMax)
+        slider.isContinuous = true
+        slider.minimumTrackTintColor = UIColor(named: AppConstants.Colors.sliderActive)
+        slider.maximumTrackTintColor = UIColor(named: AppConstants.Colors.sliderUnactive)
+        return slider
+    }()
+
+    private let durationTitleLabel = MainTitleLabel(text: "setupTitle.duration".localized)
+    private let exercisesTitleLabel = MainTitleLabel(text: "setupTitle.exercisesCount".localized)
+    private let durationValueLabel = DescriptionLabel()
+    private let exercisesValueLabel = DescriptionLabel()
+
+    private let nextButton = LargeButton(title: "largeButton.begin".localized)
+
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        setupConstraints()
+        setupValues()
+        bindViewModel()
+    }
+    
+    private func bindViewModel() {
+        viewModel.onUpdate = { [weak self] in
+            self?.setupValues()
+        }
+        
+        viewModel.onNext = { [weak self] workoutModel in
+            let viewController = WorkoutViewController(workoutModel: workoutModel)
+            self?.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    private func setupUI() {
+        view.backgroundColor = .white
+        durationSlider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
+        exercisesSlider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
+        nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+
+        [
+            durationTitleLabel,
+            durationSlider,
+            durationValueLabel,
+            exercisesTitleLabel,
+            exercisesSlider,
+            exercisesValueLabel,
+            nextButton
+        ].forEach {
+            view.addSubview($0)
+        }
+    }
+
+    private func setupValues() {
+        durationSlider.value = Float(viewModel.workoutDurationMinutes)
+        exercisesSlider.value = Float(viewModel.exercisesCount)
+        durationValueLabel.text = String(viewModel.workoutDurationMinutes) + " " + "slider.minutes".localized
+        exercisesValueLabel.text = String(viewModel.exercisesCount) + " " + "slider.variants".localized
+    }
+
+    @objc
+    private func sliderValueChanged(_ slider: UISlider) {
+        let rounded = round(slider.value)
+        slider.value = rounded
+        let intValue = Int(slider.value)
+        if slider == durationSlider {
+            viewModel.workoutDurationUpdate(minuts: intValue)
+        } else if slider == exercisesSlider {
+            viewModel.exercisesCountUpdate(count: intValue)
+        }
+    }
+
+    @objc
+    private func nextButtonTapped() {
+        viewModel.next()
+    }
+}
+extension SetupViewController {
+    private func setupConstraints() {
+        [
+            durationTitleLabel,
+            durationSlider,
+            durationValueLabel,
+            exercisesTitleLabel,
+            exercisesSlider,
+            exercisesValueLabel,
+            nextButton,
+            nextButton
+        ].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+
+        NSLayoutConstraint.activate([
+            durationTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60),
+            durationTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            durationTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            durationSlider.topAnchor.constraint(equalTo: durationTitleLabel.bottomAnchor, constant: 8),
+            durationSlider.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            durationSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            durationValueLabel.topAnchor.constraint(equalTo: durationSlider.bottomAnchor, constant: 4),
+            durationValueLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            
+            exercisesTitleLabel.topAnchor.constraint(equalTo: durationValueLabel.bottomAnchor, constant: 30),
+            exercisesTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            exercisesTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            exercisesSlider.topAnchor.constraint(equalTo: exercisesTitleLabel.bottomAnchor, constant: 8),
+            exercisesSlider.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            exercisesSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            exercisesValueLabel.topAnchor.constraint(equalTo: exercisesSlider.bottomAnchor, constant: 4),
+            exercisesValueLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+
+            nextButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: AppConstants.Layout.paddingLargeButton),
+            nextButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -AppConstants.Layout.paddingLargeButton),
+            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -AppConstants.Layout.paddingLargeButtonBottom),
+            nextButton.heightAnchor.constraint(equalToConstant: AppConstants.Layout.buttonHeightStandard)
+        ])
+    }
+}
