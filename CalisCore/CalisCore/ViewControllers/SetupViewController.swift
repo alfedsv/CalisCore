@@ -37,6 +37,17 @@ final class SetupViewController: UIViewController {
     private let exercisesValueLabel = DescriptionLabel()
 
     private let nextButton = LargeButton(title: "largeButton.begin".localized)
+    private let versionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = UIColor(named: AppConstants.Colors.labelText)
+        label.numberOfLines = 1
+        label.textAlignment = .center
+        let version = Bundle.main.appVersion
+        let build = Bundle.main.appBuild
+        label.text = "version".localized + " \(version) (\(build))"
+        return label
+    }()
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -78,7 +89,8 @@ final class SetupViewController: UIViewController {
             exercisesTitleLabel,
             exercisesSlider,
             exercisesValueLabel,
-            nextButton
+            nextButton,
+            versionLabel
         ].forEach {
             view.addSubview($0)
         }
@@ -119,7 +131,7 @@ extension SetupViewController {
             exercisesSlider,
             exercisesValueLabel,
             nextButton,
-            nextButton
+            versionLabel
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -150,7 +162,10 @@ extension SetupViewController {
             nextButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: AppConstants.Layout.paddingLargeButton),
             nextButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -AppConstants.Layout.paddingLargeButton),
             nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -AppConstants.Layout.paddingLargeButtonBottom),
-            nextButton.heightAnchor.constraint(equalToConstant: AppConstants.Layout.buttonHeightStandard)
+            nextButton.heightAnchor.constraint(equalToConstant: AppConstants.Layout.buttonHeightStandard),
+            
+            versionLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
+            versionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
 }
