@@ -141,6 +141,7 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
         if exerciseModel.currentState == .running {
             exerciseModel.currentState = .stopped
             stopTimer()
+            updatePhase()
             onStoped?()
         }
     }

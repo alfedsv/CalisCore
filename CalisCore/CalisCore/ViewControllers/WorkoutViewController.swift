@@ -5,8 +5,8 @@
 //  Created by Alexander Fedoseev on 15.09.2026.
 //
 
+
 import UIKit
-import SceneKit
 
 final class WorkoutViewController: UIViewController {
 
@@ -16,7 +16,7 @@ final class WorkoutViewController: UIViewController {
     private let contentView = UIView()
 
     private let titleExerciseLabel = MainTitleLabel()
-    private let sceneView: SCNView = SCNView()
+    private let animationView = ExerciseAnimationView()
 
     private let titleLabel = TitleLabel()
     private let descriptionLabel = DescriptionLabel()
@@ -41,32 +41,7 @@ final class WorkoutViewController: UIViewController {
 
     private let nextButton = LargeButton(title: "largeButton.next".localized)
 
-    private var transitionToken = UUID()
     private var pendingTarget: CurrentPhase?
-
-    private var persistentScale: Float?
-    private var hasSetUpCamera = false
-
-    /// Кеш заранее загруженных сцен из .dae
-    private var sceneCache: [String: SCNScene] = [:]
-    private var isPreloading = false
-
-    private lazy var cameraNode: SCNNode = {
-        let node = SCNNode()
-        node.camera = SCNCamera()
-        node.camera?.zNear = 0.01
-        node.camera?.zFar = 1000
-        node.camera?.fieldOfView = 45
-        return node
-    }()
-
-    private lazy var containerScene: SCNScene = {
-        let scene = SCNScene()
-        scene.rootNode.addChildNode(cameraNode)
-        return scene
-    }()
-
-    private var currentModelRoot: SCNNode?
 
     init(workoutModel: WorkoutModel) {
         self.viewModel = WorkoutViewModel(workoutModel: workoutModel)
@@ -81,10 +56,11 @@ final class WorkoutViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bindViewModel()
+    }
 
-        preloadScenes { [weak self] in
-            self?.playLoop(for: .idle)
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        animationView.resumeRendering()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -94,37 +70,9 @@ final class WorkoutViewController: UIViewController {
         }
     }
 
-    // MARK: - Preload
-
-    private func preloadScenes(completion: (() -> Void)? = nil) {
-        guard !isPreloading else { return }
-        isPreloading = true
-
-        let scenes = viewModel.exerciseModel.exerciseScenes
-        let names = Set([
-            scenes.idle.name,
-            scenes.workoutScene.name,
-            scenes.idleToWorkoutScene.name,
-            scenes.workoutToIdleScene.name
-        ])
-
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            var loaded: [String: SCNScene] = [:]
-            for name in names {
-                guard let url = Bundle.main.url(forResource: name, withExtension: "dae"),
-                      let scene = SCNSceneSource(url: url, options: nil)?.scene(options: nil)
-                else {
-                    print("Не удалось предзагрузить сцену \(name)")
-                    continue
-                }
-                loaded[name] = scene
-            }
-            DispatchQueue.main.async {
-                self?.sceneCache = loaded
-                self?.isPreloading = false
-                completion?()
-            }
-        }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        animationView.pauseRendering()
     }
 
     // MARK: - Bind
@@ -169,9 +117,20 @@ final class WorkoutViewController: UIViewController {
         scrollView.addSubview(contentView)
         titleExerciseLabel.text = "exercise.title".localized + " " + String(viewModel.exerciseNumber) + " / " + String(viewModel.exercisesCount)
         contentView.addSubview(titleExerciseLabel)
-        contentView.addSubview(sceneView)
-        sceneView.layer.borderWidth = 1 //tmp
-        sceneView.layer.borderColor = UIColor.black.cgColor //tmp
+
+        contentView.addSubview(animationView)
+        animationView.layer.borderWidth = 1 //tmp
+        animationView.layer.borderColor = UIColor.black.cgColor //tmp
+        
+        let scenes = viewModel.exerciseModel.exerciseScenes
+        var toPreload: [SceneModel] = [scenes.idle, scenes.workoutScene]
+        if let s = scenes.idleToWorkoutScene { toPreload.append(s) }
+        if let s = scenes.workoutToIdleScene { toPreload.append(s) }
+
+        animationView.preload(scenes: toPreload) { [weak self] in
+            self?.playLoop(for: .idle)
+        }
+
         contentView.addSubview(titleLabel)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(setsCountLabel)
@@ -181,7 +140,6 @@ final class WorkoutViewController: UIViewController {
         contentView.addSubview(durationRestLabel)
         contentView.addSubview(durationRestNumberLabel)
 
-        setupScene()
         titleLabel.text = viewModel.exerciseModel.title
         descriptionLabel.text = viewModel.exerciseModel.description
         setsCountLabel.text = "exercise.setsCount".localized
@@ -218,16 +176,6 @@ final class WorkoutViewController: UIViewController {
         updateProgressBars()
     }
 
-    private func setupScene() {
-        sceneView.scene = containerScene
-        sceneView.pointOfView = cameraNode
-        sceneView.autoenablesDefaultLighting = true
-        sceneView.allowsCameraControl = true
-        sceneView.backgroundColor = .clear
-        sceneView.rendersContinuously = true
-        sceneView.isPlaying = true
-    }
-
     // MARK: - Phase handling
 
     private func handleTargetPhase(_ target: CurrentPhase) {
@@ -239,14 +187,26 @@ final class WorkoutViewController: UIViewController {
         }
         startTransition(to: target)
     }
-
+    
     private func startTransition(to target: CurrentPhase) {
         let model = viewModel.exerciseModel
         let scenes = model.exerciseScenes
-        let transitionScene = (model.currentPhase == .idle) ? scenes.idleToWorkoutScene : scenes.workoutToIdleScene
+
+        let goingToWorkout = (model.currentPhase == .idle)
+        let transitionScene = goingToWorkout ? scenes.idleToWorkoutScene
+                                             : scenes.workoutToIdleScene
+
+        // Нет переходного клипа — переключаемся мгновенно
+        guard let transitionScene = transitionScene else {
+            model.currentPhase = target
+            pendingTarget = nil
+            playLoop(for: target)
+            return
+        }
+
         model.currentPhase = .transition
         pendingTarget = target
-        playExercise(exerciseScene: transitionScene, loop: false) { [weak self] in
+        animationView.play(scene: transitionScene, loop: false) { [weak self] in
             guard let self = self else { return }
             let next = self.pendingTarget ?? target
             self.pendingTarget = nil
@@ -258,155 +218,8 @@ final class WorkoutViewController: UIViewController {
     private func playLoop(for phase: CurrentPhase) {
         let scenes = viewModel.exerciseModel.exerciseScenes
         let scene = (phase == .workout) ? scenes.workoutScene : scenes.idle
-        playExercise(exerciseScene: scene, loop: true)
-    }
-
-    // MARK: - Play exercise
-
-    private func playExercise(exerciseScene: SceneModel, loop: Bool = true, completion: (() -> Void)? = nil) {
-        let token = UUID()
-        transitionToken = token
-
-        guard let wrapper = instantiateModel(named: exerciseScene.name) else {
-            // Кеша нет — сразу завершаем, чтобы не залипнуть в .transition
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self, self.transitionToken == token else { return }
-                completion?()
-            }
-            return
-        }
-
-        // Масштаб фиксируем по первой сцене
-        if persistentScale == nil {
-            let bbox = wrapper.boundingBox
-            let modelHeight = bbox.max.y - bbox.min.y
-            let desiredHeight: Float = 2.0
-            persistentScale = modelHeight > 0 ? desiredHeight / modelHeight : 1.0
-        }
-        let scale = persistentScale!
-        wrapper.scale = SCNVector3(scale, scale, scale)
-
-        // Сразу прячем — чтобы не мелькнул bind pose
-        wrapper.isHidden = true
-
-        // Запускаем анимации ДО добавления в граф
-        var maxDuration: TimeInterval = 0
-        var found = false
-
-        wrapper.enumerateChildNodes { node, _ in
-            for key in node.animationKeys {
-                guard let player = node.animationPlayer(forKey: key) else { continue }
-                player.animation.repeatCount = loop ? .greatestFiniteMagnitude : 1
-                player.animation.isCumulative = false
-                player.animation.isRemovedOnCompletion = false
-                player.play()
-                maxDuration = max(maxDuration, player.animation.duration)
-                found = true
-            }
-        }
-        if !found, !wrapper.animationKeys.isEmpty {
-            for key in wrapper.animationKeys {
-                guard let player = wrapper.animationPlayer(forKey: key) else { continue }
-                player.animation.repeatCount = loop ? .greatestFiniteMagnitude : 1
-                player.animation.isCumulative = false
-                player.animation.isRemovedOnCompletion = false
-                player.play()
-                maxDuration = max(maxDuration, player.animation.duration)
-            }
-        }
-
-        // Геометрия для камеры — в мировых координатах
-        let center = wrapper.boundingSphere.center
-        let radius = wrapper.boundingSphere.radius
-        let scaledCenter = SCNVector3(center.x * scale, center.y * scale, center.z * scale)
-        let scaledRadius = radius * scale
-
-        let radiusOrbit: Float = scaledRadius * exerciseScene.radiusOrbitMul
-        let x = radiusOrbit * cos(exerciseScene.elevation) * sin(exerciseScene.azimuth)
-        let y = radiusOrbit * sin(exerciseScene.elevation)
-        let z = radiusOrbit * cos(exerciseScene.elevation) * cos(exerciseScene.azimuth)
-
-        let targetPosition = SCNVector3(scaledCenter.x + x, scaledCenter.y + y, scaledCenter.z + z)
-        let lookAtTarget = SCNVector3(
-            scaledCenter.x + scaledRadius * exerciseScene.scaledCenterMulX,
-            scaledCenter.y + scaledRadius * exerciseScene.scaledCenterMulY,
-            scaledCenter.z + scaledRadius * exerciseScene.scaledCenterMulZ
-        )
-
-        // Атомарная подмена старой модели на новую
-        SCNTransaction.begin()
-        SCNTransaction.animationDuration = 0
-        SCNTransaction.disableActions = true
-
-        if let old = currentModelRoot {
-            old.removeAllActions()
-            old.enumerateChildNodes { node, _ in node.removeAllActions() }
-            old.removeFromParentNode()
-        }
-        containerScene.rootNode.addChildNode(wrapper)
-        currentModelRoot = wrapper
-
-        SCNTransaction.commit()
-
-        // Камера: первый раз — мгновенно, дальше — плавно
-        if !hasSetUpCamera {
-            hasSetUpCamera = true
-            cameraNode.position = targetPosition
-            cameraNode.look(at: lookAtTarget)
-        } else {
-            SCNTransaction.begin()
-            SCNTransaction.animationDuration = 0.35
-            SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-            cameraNode.position = targetPosition
-            cameraNode.look(at: lookAtTarget)
-            SCNTransaction.commit()
-        }
-
-        // Показываем узел — анимация уже применена
-        SCNTransaction.begin()
-        SCNTransaction.animationDuration = 0
-        SCNTransaction.disableActions = true
-        wrapper.isHidden = false
-        SCNTransaction.commit()
-
-        // Completion — привязан к рендер-циклу через SCNAction
-        guard let completion = completion else { return }
-
-        if maxDuration > 0 {
-            let wait = SCNAction.wait(duration: maxDuration)
-            let fire = SCNAction.run { [weak self] _ in
-                guard let self = self, self.transitionToken == token else { return }
-                completion()
-            }
-            wrapper.runAction(.sequence([wait, fire]), forKey: "completion")
-        } else {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self, self.transitionToken == token else { return }
-                completion()
-            }
-        }
-    }
-
-    // MARK: - Model instantiation
-
-    /// Достаёт сцену из кеша, клонирует, убирает камеры и оборачивает в wrapper-узел.
-    private func instantiateModel(named name: String) -> SCNNode? {
-        guard let cachedScene = sceneCache[name] else {
-            print("Сцена \(name) отсутствует в кеше")
-            return nil
-        }
-
-        let clonedRoot = cachedScene.rootNode.clone()
-
-        clonedRoot.childNodes
-            .filter { $0.camera != nil }
-            .forEach { $0.removeFromParentNode() }
-
-        let wrapper = SCNNode()
-        for child in clonedRoot.childNodes {
-            wrapper.addChildNode(child)
-        }
-        return wrapper
+        let alternating = (phase == .workout) && scenes.isWorkoutReversed
+        animationView.play(scene: scene, alternating: alternating, loop: true)
     }
 
     // MARK: - Progress helpers
@@ -481,7 +294,7 @@ extension WorkoutViewController {
             scrollView,
             contentView,
             titleExerciseLabel,
-            sceneView,
+            animationView,
             titleLabel,
             descriptionLabel,
             setsCountLabel,
@@ -513,8 +326,6 @@ extension WorkoutViewController {
             titleExerciseLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             titleExerciseLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
-            
-
             titleLabel.topAnchor.constraint(equalTo: titleExerciseLabel.bottomAnchor, constant: 25),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 25),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -25),
@@ -543,13 +354,13 @@ extension WorkoutViewController {
             durationRestNumberLabel.leadingAnchor.constraint(equalTo: durationRestLabel.trailingAnchor, constant: 5),
             durationRestNumberLabel.centerYAnchor.constraint(equalTo: durationRestLabel.centerYAnchor),
             durationRestNumberLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -25),
-            
-            sceneView.topAnchor.constraint(equalTo: durationRestLabel.bottomAnchor, constant: 25),
-            sceneView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            sceneView.heightAnchor.constraint(equalToConstant: AppConstants.Layout.imageLargeSide),
-            sceneView.widthAnchor.constraint(equalTo: sceneView.heightAnchor),
 
-            controlButton.topAnchor.constraint(equalTo: sceneView.bottomAnchor, constant: 40),
+            animationView.topAnchor.constraint(equalTo: durationRestLabel.bottomAnchor, constant: 15),
+            animationView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: AppConstants.Layout.animationViewPadding),
+            animationView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -AppConstants.Layout.animationViewPadding),
+            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor),
+
+            controlButton.topAnchor.constraint(equalTo: animationView.bottomAnchor, constant: 20),
             controlButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             controlButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             controlButton.heightAnchor.constraint(equalToConstant: 30),

@@ -9,8 +9,9 @@ import Foundation
 
 struct ExerciseScenesModel {
     let idle: SceneModel
-    let idleToWorkoutScene: SceneModel
+    let idleToWorkoutScene: SceneModel?
     let workoutScene: SceneModel
-    let workoutToIdleScene: SceneModel
+    let workoutToIdleScene: SceneModel?
+    let isWorkoutReversed: Bool
 }
 

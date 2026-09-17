@@ -51,8 +51,7 @@ final class WorkoutHelper {
     }
 
     func getWorkoutExercises() -> [ExerciseModel] {
-        let dataSource: DataSource = DataSource()
-        let exs: [ExerciseRawModel] = dataSource.exercises
+        let exs: [ExerciseRawModel] = DataSource.exercises
         guard exs.count >= userExercisesCount else {
             print("[ERROR] Недостаточно упражнений в базе для выбранного количества")
             return []
@@ -77,12 +76,6 @@ final class WorkoutHelper {
             models.append(model)
         }
         return models
-    }
-    
-    func getWorkoutExercisesCount() -> Int {
-        let dataSource: DataSource = DataSource()
-        let exs: [ExerciseRawModel] = dataSource.exercises
-        return exs.count
     }
 
     // Генерация длительности подхода (кратно 5)

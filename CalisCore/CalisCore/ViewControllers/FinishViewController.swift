@@ -10,17 +10,8 @@ import UIKit
 final class FinishViewController: UIViewController {
 
     private let viewModel: FinishViewModelProtocol
-    
     private let titleLabel = MainTitleLabel(text: "finish.title".localized)
-    
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 4
-        imageView.image = UIImage(named: "win")
-        return imageView
-    }()
+    private let animationView = ExerciseAnimationView()
     
     private let winLabel: UILabel = {
         let label = UILabel()
@@ -54,8 +45,14 @@ final class FinishViewController: UIViewController {
     }
     
     private func setupUI() {
+        view.backgroundColor = .white
         view.addSubview(titleLabel)
-        view.addSubview(imageView)
+        view.addSubview(animationView)
+        animationView.preload(scenes: [
+            DataSource.victory
+        ]) { [weak self] in
+            self?.playLoop()
+        }
         view.addSubview(winLabel)
         view.addSubview(toMainButton)
         winLabel.text = viewModel.win
@@ -68,12 +65,17 @@ final class FinishViewController: UIViewController {
         viewModel.toMain()
     }
 
+    private func playLoop() {
+        let scene = DataSource.victory
+        animationView.play(scene: scene, loop: true)
+    }
+
 }
 extension FinishViewController {
     private func setupConstraints() {
         [
             titleLabel,
-            imageView,
+            animationView,
             winLabel,
             toMainButton
         ].forEach {
@@ -84,12 +86,11 @@ extension FinishViewController {
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 100),
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 45),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -45),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+
+            animationView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 100),
+            animationView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: AppConstants.Layout.animationViewPadding),
+            animationView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -AppConstants.Layout.animationViewPadding),
+            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor),
             
             winLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 35),
             winLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -35),

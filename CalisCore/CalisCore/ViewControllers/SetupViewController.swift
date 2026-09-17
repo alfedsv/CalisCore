@@ -24,7 +24,7 @@ final class SetupViewController: UIViewController {
     private let exercisesSlider: UISlider = {
         let slider = UISlider()
         slider.minimumValue = Float(WorkoutModelConstants.exercisesCountMin)
-        slider.maximumValue = Float(WorkoutModelConstants.exercisesCountMax)
+        slider.maximumValue = Float(DataSource.exercises.count)
         slider.isContinuous = true
         slider.minimumTrackTintColor = UIColor(named: AppConstants.Colors.sliderActive)
         slider.maximumTrackTintColor = UIColor(named: AppConstants.Colors.sliderUnactive)
@@ -108,6 +108,7 @@ final class SetupViewController: UIViewController {
         viewModel.next()
     }
 }
+
 extension SetupViewController {
     private func setupConstraints() {
         [

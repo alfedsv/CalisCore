@@ -18,7 +18,7 @@ enum AppConstants {
         
         static let imageCornerRadius: CGFloat = 4
 
-        static let imageLargeSide: CGFloat = 200
+        static let animationViewPadding: CGFloat = 20
     }
     
     enum Colors {
