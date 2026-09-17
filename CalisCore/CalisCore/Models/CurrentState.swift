@@ -8,8 +8,8 @@
 import Foundation
 
 enum CurrentState {
-    case running    // в ходе выполнения
-    case begin      // в начале
-    case ended      // закончено
-    case stopped    // приостановлено
+    case running     // в ходе выполнения
+    case begin              // в начале
+    case ended              // закончено
+    case stopped            // приостановлено
 }

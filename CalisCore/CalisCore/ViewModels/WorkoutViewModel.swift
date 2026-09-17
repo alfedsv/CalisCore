@@ -16,6 +16,7 @@ protocol WorkoutViewModelProtocol: AnyObject {
     var onStarted: (() -> Void)? { get set }
     var onStoped: (() -> Void)? { get set }
     var onEnded: (() -> Void)? { get set }
+    var onPhaseChanged: ((CurrentPhase) -> Void)? { get set }
     var onNext: ((WorkoutModel) -> Void)? { get set }
     var onFinish: (() -> Void)? { get set }
     func control()
@@ -32,6 +33,7 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
     var onStarted: (() -> Void)?
     var onStoped: (() -> Void)?
     var onEnded: (() -> Void)?
+    var onPhaseChanged: ((CurrentPhase) -> Void)?
     var onNext: ((WorkoutModel) -> Void)?
     var onFinish: (() -> Void)?
     private var exerciseIndex: Int {
@@ -39,6 +41,7 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
     }
     private let workoutModel: WorkoutModel
     private var timer: Timer?
+    private var lastNotifiedPhase: CurrentPhase = .idle
     
     init(workoutModel: WorkoutModel) {
         self.workoutModel = workoutModel
@@ -61,6 +64,7 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
     
     private func startTimer() {
         self.onUpdate?()
+        self.updatePhase()
         guard timer == nil else { return }
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self = self else { return }
@@ -69,10 +73,13 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
                 self.exerciseModel.currentState = .ended
                 self.exerciseModel.progress = self.exerciseModel.exerciseDuration
                 self.onUpdate?()
+                self.updatePhase()
+                self.onEnded?()
                 return
             }
             self.exerciseModel.progress = Int(Double(self.exerciseModel.progress) + 1.0)
             self.onUpdate?()
+            self.updatePhase() 
         }
     }
     
@@ -81,11 +88,27 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
         timer = nil
     }
     
+    private func updatePhase() {
+        let m = exerciseModel
+        let target: CurrentPhase
+        if m.currentState == .running && m.progress < m.exerciseDuration {
+            let cycle = m.setDuration + m.recoveryDuration
+            let inCycle = m.progress % cycle
+            target = inCycle < m.setDuration ? .workout : .idle
+        } else {
+            target = .idle
+        }
+        guard target != lastNotifiedPhase else { return }
+        lastNotifiedPhase = target
+        onPhaseChanged?(target)
+    }
+    
     func control() {
         switch exerciseModel.currentState {
         case .running:
             exerciseModel.currentState = .stopped
             stopTimer()
+            updatePhase()
             onStoped?()
         case .begin, .stopped:
             exerciseModel.currentState = .running

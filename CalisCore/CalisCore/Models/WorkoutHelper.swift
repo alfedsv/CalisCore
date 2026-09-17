@@ -18,44 +18,29 @@ final class WorkoutHelper {
 
     private let totalDuration: Int          // общая длительность тренировки (сек)
     private let userExercisesCount: Int     // количество упражнений, выбранное пользователем
-    
-    private var mainWorkoutTime: Int {
-        return totalDuration
-    }
-    
     private let restBetweenSets: Int = 60
     private var restBetweenCycles: Int = 0
-    private let cyclesCount: Int = 1
     
-    private var totalExercisesCount: Int {
-        return userExercisesCount * cyclesCount
-    }
     
     private var timePerExercise: Int {
-        // (mainWorkoutTime - отдых между кругами) / общее количество упражнений
-        let available = mainWorkoutTime - ((cyclesCount - 1) * restBetweenCycles)
-        return available / totalExercisesCount   // целочисленное деление (округление вниз)
+        return totalDuration / userExercisesCount   // целочисленное деление (округление вниз)
     }
     
     private var exercisePlans: [ExercisePlanModel] {
         var plan: [ExercisePlanModel] = []
-        print("Количество упраженений:\t\(totalExercisesCount)")
-        print("Количество кругов:\t\(cyclesCount)")
+        print("Количество упраженений:\t\(userExercisesCount)")
         print("Время на всю тренировку:\t\(totalDuration)")
-        for cycle in 0..<cyclesCount {
-            print("Круг (index):\t\(cycle)")
-            for exerciseIndex in 0..<userExercisesCount {
-                print("Упражнение (index):\t\(exerciseIndex)")
-                let setDuration = randomSetDuration()   // длительность подхода
-                let recoveryDuration = recoveryDuration(setDuration: setDuration)
-                let setsCount = timePerExercise / (setDuration + recoveryDuration)
-                let isLast = (exerciseIndex % userExercisesCount == userExercisesCount - 1)
-                print("\tКоличество походов:\t\(setsCount)")
-                print("\tВремя на все упраженение:\t\(timePerExercise)")
-                print("\tВремя на один подход:\t\(setDuration)")
-                print("\tВремя на одых после подхода:\t\(recoveryDuration)")
-                plan.append(ExercisePlanModel(setDuration: setDuration, recoveryDuration: recoveryDuration, setsCount: setsCount, isLastInCycle: isLast))
-            }
+        for exerciseIndex in 0..<userExercisesCount {
+            print("Упражнение (index):\t\(exerciseIndex)")
+            let setDuration = randomSetDuration()   // длительность подхода
+            let recoveryDuration = recoveryDuration(setDuration: setDuration)
+            let setsCount = timePerExercise / (setDuration + recoveryDuration)
+            let isLast = (exerciseIndex % userExercisesCount == userExercisesCount - 1)
+            print("\tКоличество походов:\t\(setsCount)")
+            print("\tВремя на все упраженение:\t\(timePerExercise)")
+            print("\tВремя на один подход:\t\(setDuration)")
+            print("\tВремя на одых после подхода:\t\(recoveryDuration)")
+            plan.append(ExercisePlanModel(setDuration: setDuration, recoveryDuration: recoveryDuration, setsCount: setsCount, isLastInCycle: isLast))
         }
         return plan
     }
@@ -66,14 +51,13 @@ final class WorkoutHelper {
     }
 
     func getWorkoutExercises() -> [ExerciseModel] {
-        let dataSource: Workout = Workout()
-        let exs: [Workout.Exercise] = dataSource.getExercises()
+        let dataSource: DataSource = DataSource()
+        let exs: [ExerciseRawModel] = dataSource.exercises
         guard exs.count >= userExercisesCount else {
             print("[ERROR] Недостаточно упражнений в базе для выбранного количества")
             return []
         }
-        let baseExercises = exs.shuffled().prefix(userExercisesCount).map { $0 }
-        let exercises = Array(repeating: baseExercises, count: cyclesCount).flatMap { $0 }
+        let exercises = exs.shuffled().prefix(userExercisesCount).map { $0 }
         guard exercises.count == exercisePlans.count else {
             print("[ERROR] exercises.count (\(exercises.count)) != exercisePlans.count (\(exercisePlans.count))")
             return []
@@ -85,7 +69,7 @@ final class WorkoutHelper {
                 index: index,
                 title: exercises[index].name,
                 description: exercises[index].description,
-                positions: exercises[index].positions,
+                exerciseScenes: exercises[index].exerciseScenes,
                 setDuration: exercisePlanModel.setDuration,
                 recoveryDuration: exercisePlanModel.recoveryDuration,
                 setsCount: exercisePlanModel.setsCount
@@ -96,8 +80,8 @@ final class WorkoutHelper {
     }
     
     func getWorkoutExercisesCount() -> Int {
-        let dataSource: Workout = Workout()
-        let exs: [Workout.Exercise] = dataSource.getExercises()
+        let dataSource: DataSource = DataSource()
+        let exs: [ExerciseRawModel] = dataSource.exercises
         return exs.count
     }
 

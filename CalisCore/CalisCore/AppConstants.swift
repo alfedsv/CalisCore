@@ -17,10 +17,8 @@ enum AppConstants {
         static let buttonHeightSmall: CGFloat = 30
         
         static let imageCornerRadius: CGFloat = 4
-        static let recomendationViewCornerRadius: CGFloat = 10  // RecomendationView
-        
-        static let imageSmallSide: CGFloat = 100                // WarmUpCoolDownView
-        static let imageLargeSide: CGFloat = 200                // ExerciseViewController
+
+        static let imageLargeSide: CGFloat = 200
     }
     
     enum Colors {
@@ -37,14 +35,6 @@ enum AppConstants {
         static let buttonOnceMore = "Buttons/onceMore"
         static let buttonText = "Buttons/text"
         static let buttonUnactive = "Buttons/unactive"
-        static let setupButtonBackgroundEquipmentActive = "SetupButtonBackground/Equipment/active"
-        static let setupButtonBackgroundEquipmentUnactive = "SetupButtonBackground/Equipment/unactive"
-        static let setupButtonBackgroundTargetAreaActive = "SetupButtonBackground/TargetArea/active"
-        static let setupButtonBackgroundTargetAreaUnactive = "SetupButtonBackground/TargetArea/unactive"
-        static let setupButtonBackgroundWorkoutTypeActive = "SetupButtonBackground/WorkoutType/active"
-        static let setupButtonBackgroundWorkoutTypeUnactive = "SetupButtonBackground/WorkoutType/unactive"
-        static let recomendationBackground = "recomendationBackground"
-        static let recomendationTitle = "recomendationTitle"
     }
     
 }

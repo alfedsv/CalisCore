@@ -14,20 +14,21 @@ final class ExerciseModel {
     let index: Int
     let title: String
     let description: String
-    let positions: Workout.Positions
+    let exerciseScenes: ExerciseScenesModel
     var currentState: CurrentState = .begin
+    var currentPhase: CurrentPhase = .idle
     let setDuration: Int        // длительность одного подхода (сек)
     let recoveryDuration: Int   // отдых после подхода (сек)
     let setsCount: Int          // количество подходов
     let exerciseDuration: Int   // время выполнения всего уражнения
     var progress: Int = 0
 
-    init(id: UUID, index: Int, title: String, description: String, positions: Workout.Positions, setDuration: Int, recoveryDuration: Int, setsCount: Int) {
+    init(id: UUID, index: Int, title: String, description: String, exerciseScenes: ExerciseScenesModel, setDuration: Int, recoveryDuration: Int, setsCount: Int) {
         self.id = id
         self.index = index
         self.title = title
         self.description = description
-        self.positions = positions
+        self.exerciseScenes = exerciseScenes
         self.setDuration = setDuration
         self.recoveryDuration = recoveryDuration
         self.setsCount = setsCount
