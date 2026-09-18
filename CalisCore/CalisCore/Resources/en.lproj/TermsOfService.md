@@ -63,7 +63,7 @@ Last updated: September 18, 2026
 8.3. These Terms are governed by the laws of the Russian Federation.
 
 9. PRIVACY
-9.1. Personal data processing is carried out in accordance with the Privacy Policy, which is an integral part of these Terms. The Privacy Policy is available at: [LINK].
+9.1. Personal data processing is carried out in accordance with the Privacy Policy, which is an integral part of these Terms. The Privacy Policy is available at: https://sites.google.com/view/caliscore-privacy.
 
 9.2. If the App uses HealthKit, the Privacy Policy must clearly disclose what HealthKit data is collected, how it is used, and with whom it is shared.
 

@@ -17,7 +17,7 @@ enum AppConstants {
         static let buttonHeightSmall: CGFloat = 30
         
         static let imageCornerRadius: CGFloat = 4
-
+        static let checkboxButtonSide: CGFloat = 32
         static let animationViewPadding: CGFloat = 20
     }
     
@@ -35,6 +35,7 @@ enum AppConstants {
         static let buttonOnceMore = "Buttons/onceMore"
         static let buttonText = "Buttons/text"
         static let buttonUnactive = "Buttons/unactive"
+        static let checkboxButton = "consent"
     }
     
 }

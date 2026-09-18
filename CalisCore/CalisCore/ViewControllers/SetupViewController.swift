@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SetupViewController.swift
 //  CalisCore
 //
 //  Created by  Alexander Fedoseev on 15.09.2026.
@@ -7,10 +7,16 @@
 
 import UIKit
 
+/// Контроллер экрана настройки тренировки.
+/// Позволяет выбрать длительность и количество упражнений.
 final class SetupViewController: UIViewController {
-    
-    private let viewModel: SetupViewModelProtocol = SetupViewModel()
-    
+
+    // MARK: - Dependencies
+
+    private let viewModel: SetupViewModelProtocol
+
+    // MARK: - UI Elements
+
     private let durationSlider: UISlider = {
         let slider = UISlider()
         slider.minimumValue = Float(WorkoutModelConstants.workoutDurationMin)
@@ -20,7 +26,6 @@ final class SetupViewController: UIViewController {
         slider.maximumTrackTintColor = UIColor(named: AppConstants.Colors.sliderUnactive)
         return slider
     }()
-
     private let exercisesSlider: UISlider = {
         let slider = UISlider()
         slider.minimumValue = Float(WorkoutModelConstants.exercisesCountMin)
@@ -30,7 +35,6 @@ final class SetupViewController: UIViewController {
         slider.maximumTrackTintColor = UIColor(named: AppConstants.Colors.sliderUnactive)
         return slider
     }()
-
     private let durationTitleLabel = MainTitleLabel(text: "setupTitle.duration".localized)
     private let exercisesTitleLabel = MainTitleLabel(text: "setupTitle.exercisesCount".localized)
     private let durationValueLabel = DescriptionLabel()
@@ -49,7 +53,10 @@ final class SetupViewController: UIViewController {
         return label
     }()
 
+    // MARK: - Init
+
     init() {
+        self.viewModel = SetupViewModel()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -62,11 +69,13 @@ final class SetupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupConstraints()
+        setupActions()
         setupValues()
         bindViewModel()
     }
-    
+
+    // MARK: - Binding
+
     private func bindViewModel() {
         viewModel.onUpdate = { [weak self] in
             self?.setupValues()
@@ -77,25 +86,26 @@ final class SetupViewController: UIViewController {
             self?.navigationController?.pushViewController(viewController, animated: true)
         }
     }
-    
+
+    // MARK: - Setup UI
+
     private func setupUI() {
         view.backgroundColor = .white
+        view.addSubview(durationTitleLabel)
+        view.addSubview(durationSlider)
+        view.addSubview(durationValueLabel)
+        view.addSubview(exercisesTitleLabel)
+        view.addSubview(exercisesSlider)
+        view.addSubview(exercisesValueLabel)
+        view.addSubview(nextButton)
+        view.addSubview(versionLabel)
+        setupConstraints()
+    }
+    
+    private func setupActions() {
         durationSlider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
         exercisesSlider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
-
-        [
-            durationTitleLabel,
-            durationSlider,
-            durationValueLabel,
-            exercisesTitleLabel,
-            exercisesSlider,
-            exercisesValueLabel,
-            nextButton,
-            versionLabel
-        ].forEach {
-            view.addSubview($0)
-        }
     }
 
     private func setupValues() {
@@ -105,13 +115,15 @@ final class SetupViewController: UIViewController {
         exercisesValueLabel.text = String(viewModel.exercisesCount) + " " + "slider.variants".localized
     }
 
+    // MARK: - Actions
+
     @objc
     private func sliderValueChanged(_ slider: UISlider) {
         let rounded = round(slider.value)
         slider.value = rounded
         let intValue = Int(slider.value)
         if slider == durationSlider {
-            viewModel.workoutDurationUpdate(minuts: intValue)
+            viewModel.workoutDurationUpdate(minutes: intValue)
         } else if slider == exercisesSlider {
             viewModel.exercisesCountUpdate(count: intValue)
         }
@@ -125,8 +137,8 @@ final class SetupViewController: UIViewController {
 
 // MARK: - Layout
 
-extension SetupViewController {
-    private func setupConstraints() {
+private extension SetupViewController {
+    func setupConstraints() {
         [
             durationTitleLabel,
             durationSlider,

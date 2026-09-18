@@ -16,42 +16,38 @@ final class ConsentViewController: UIViewController {
         label.text = "consent.title".localized
         label.font = .systemFont(ofSize: 28, weight: .bold)
         label.numberOfLines = 0
-        label.textColor = UIColor(named: "labelText")
+        label.textColor = UIColor(named: AppConstants.Colors.labelText)
         label.textAlignment = .center
         return label
     }()
-    
     private let subtitleLabel: UILabel = {
         let label = UILabel()
         label.text = "consent.subtitle".localized
         label.font = .systemFont(ofSize: 15)
-        label.textColor = UIColor(named: "labelText")
+        label.textColor = UIColor(named: AppConstants.Colors.labelText)
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
     }()
-    
     private let termsTextView: UITextView = {
-        let tv = UITextView()
-        tv.isEditable = false
-        tv.isScrollEnabled = true
-        tv.font = .systemFont(ofSize: 14)
-        tv.backgroundColor = .lightGray
-        tv.layer.cornerRadius = 12
-        tv.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-        tv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 12, right: 0)
-        return tv
+        let textView = UITextView()
+        textView.isEditable = false
+        textView.isScrollEnabled = true
+        textView.font = .systemFont(ofSize: 14)
+        textView.backgroundColor = .lightGray
+        textView.layer.cornerRadius = 12
+        textView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        textView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 12, right: 0)
+        return textView
     }()
-    
     private let checkboxButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "square"), for: .normal)
         button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .selected)
-        button.tintColor = UIColor(named: "consent")
+        button.tintColor = UIColor(named: AppConstants.Colors.checkboxButton)
         button.contentHorizontalAlignment = .leading
         return button
     }()
-    
     private let agreementLabel: UILabel = {
         let label = UILabel()
         label.text = "consent.checkbox".localized
@@ -59,48 +55,39 @@ final class ConsentViewController: UIViewController {
         label.numberOfLines = 0
         return label
     }()
-    
     private let continueButton = LargeButton(title: "largeButton.consent".localized, isActive: false)
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         setupUI()
         setupActions()
         termsTextView.attributedText = TermsContent.combinedAttributedText()
         termsTextView.contentOffset = .zero
     }
     
-    // MARK: - Setup
+    // MARK: - Setup UI
     
     private func setupUI() {
+        view.backgroundColor = .white
         // Чекбокс + текст в горизонтальном стеке
         let consentRow = UIStackView(arrangedSubviews: [checkboxButton, agreementLabel])
         consentRow.axis = .horizontal
         consentRow.spacing = 8
         consentRow.alignment = .top
-        
-        [
-            titleLabel,
-            subtitleLabel,
-            termsTextView,
-            consentRow,
-            continueButton
-        ].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
-        }
-        
+        view.addSubview(titleLabel)
+        view.addSubview(subtitleLabel)
+        view.addSubview(termsTextView)
+        view.addSubview(consentRow)
+        view.addSubview(continueButton)
         setupConstraints(consentRow: consentRow)
     }
     
     private func setupActions() {
         checkboxButton.addTarget(self, action: #selector(toggleCheckbox), for: .touchUpInside)
         continueButton.addTarget(self, action: #selector(continueTapped), for: .touchUpInside)
-        
-        // Тап по тексту тоже переключает галочку — удобно для пользователя
+        // Тап по тексту тоже переключает галочку
         let tap = UITapGestureRecognizer(target: self, action: #selector(toggleCheckbox))
         agreementLabel.isUserInteractionEnabled = true
         agreementLabel.addGestureRecognizer(tap)
@@ -135,42 +122,45 @@ final class ConsentViewController: UIViewController {
 
 // MARK: - Layout
 
-extension ConsentViewController {
-    private func setupConstraints(consentRow: UIStackView) {
-        let safe = view.safeAreaLayoutGuide
+private extension ConsentViewController {
+    func setupConstraints(consentRow: UIStackView) {
+        [
+            titleLabel,
+            subtitleLabel,
+            termsTextView,
+            consentRow,
+            continueButton
+        ].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+
         let hInset: CGFloat = 20
         
         NSLayoutConstraint.activate([
-            // Заголовок — сверху
-            titleLabel.topAnchor.constraint(equalTo: safe.topAnchor, constant: 16),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: hInset),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -hInset),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: hInset),
+            titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -hInset),
             
-            // Подзаголовок — под заголовком
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            subtitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: hInset),
-            subtitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -hInset),
+            subtitleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: hInset),
+            subtitleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -hInset),
             
-            // Текстовое поле — тянется по вертикали, заполняя всё свободное место
             termsTextView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 16),
-            termsTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: hInset),
-            termsTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -hInset),
+            termsTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: hInset),
+            termsTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -hInset),
             
-            // Чекбокс — под текстовым полем
             consentRow.topAnchor.constraint(equalTo: termsTextView.bottomAnchor, constant: 16),
-            consentRow.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: hInset),
-            consentRow.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -hInset),
-            
-            // Кнопка — под чекбоксом, прижата к низу
+            consentRow.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: hInset),
+            consentRow.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -hInset),
+
             continueButton.topAnchor.constraint(equalTo: consentRow.bottomAnchor, constant: 16),
-            continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: hInset),
-            continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -hInset),
-            continueButton.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -16),
-            continueButton.heightAnchor.constraint(equalToConstant: 52),
-            
-            // Чекбокс — фиксированный размер
-            checkboxButton.widthAnchor.constraint(equalToConstant: 32),
-            checkboxButton.heightAnchor.constraint(equalToConstant: 32),
+            continueButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: AppConstants.Layout.paddingLargeButton),
+            continueButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -AppConstants.Layout.paddingLargeButton),
+            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -AppConstants.Layout.paddingLargeButtonBottom),
+            continueButton.heightAnchor.constraint(equalToConstant: AppConstants.Layout.buttonHeightStandard),
+
+            checkboxButton.widthAnchor.constraint(equalToConstant: AppConstants.Layout.checkboxButtonSide),
+            checkboxButton.heightAnchor.constraint(equalToConstant: AppConstants.Layout.checkboxButtonSide),
             
             // Минимальная высота текстового поля — чтобы на маленьких экранах
             // заголовок и кнопка не выдавливали его полностью

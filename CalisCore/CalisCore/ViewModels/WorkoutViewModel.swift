@@ -12,13 +12,15 @@ protocol WorkoutViewModelProtocol: AnyObject {
     var exerciseNumber: Int { get }
     var exercisesCount: Int { get }
     var exerciseModel: ExerciseModel { get }
+
     var onUpdate: (() -> Void)? { get set }
     var onStarted: (() -> Void)? { get set }
-    var onStoped: (() -> Void)? { get set }
+    var onStopped: (() -> Void)? { get set }
     var onEnded: (() -> Void)? { get set }
     var onPhaseChanged: ((CurrentPhase) -> Void)? { get set }
     var onNext: ((WorkoutModel) -> Void)? { get set }
     var onFinish: (() -> Void)? { get set }
+
     func control()
     func next()
     func back()
@@ -26,16 +28,24 @@ protocol WorkoutViewModelProtocol: AnyObject {
 
 final class WorkoutViewModel: WorkoutViewModelProtocol {
 
+    // MARK: - Public
+
     var exerciseNumber: Int
     var exercisesCount: Int
     var exerciseModel: ExerciseModel
+
+    // MARK: - Callbacks
+
     var onUpdate: (() -> Void)?
     var onStarted: (() -> Void)?
-    var onStoped: (() -> Void)?
+    var onStopped: (() -> Void)?
     var onEnded: (() -> Void)?
     var onPhaseChanged: ((CurrentPhase) -> Void)?
     var onNext: ((WorkoutModel) -> Void)?
     var onFinish: (() -> Void)?
+    
+    // MARK: - Private
+    
     private var exerciseIndex: Int {
         return workoutModel.currentExerciseIndex
     }
@@ -55,12 +65,14 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
         case .running:
             exerciseModel.currentState = .stopped
             stopTimer()
-            onStoped?()
+            onStopped?()
         case .begin, .ended, .stopped:
             break
         }
         stopTimer()
     }
+
+    // MARK: - Timer
     
     private func startTimer() {
         self.onUpdate?()
@@ -87,6 +99,8 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
         timer?.invalidate()
         timer = nil
     }
+
+    // MARK: - Phase
     
     private func updatePhase() {
         let m = exerciseModel
@@ -109,7 +123,7 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
             exerciseModel.currentState = .stopped
             stopTimer()
             updatePhase()
-            onStoped?()
+            onStopped?()
         case .begin, .stopped:
             exerciseModel.currentState = .running
             startTimer()
@@ -118,6 +132,8 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
             break
         }
     }
+
+    // MARK: - Navigation
 
     func next() {
         navigation()
@@ -128,21 +144,21 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
             onFinish?()
         }
     }
-    
+
     func back() {
         navigation()
         if exerciseIndex > 0 {
             workoutModel.currentExerciseIndex = exerciseIndex - 1
         }
     }
-    
-    
+
     private func navigation() {
         if exerciseModel.currentState == .running {
             exerciseModel.currentState = .stopped
             stopTimer()
             updatePhase()
-            onStoped?()
+            onStopped?()
         }
     }
 }
+

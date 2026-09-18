@@ -13,7 +13,7 @@ protocol SetupViewModelProtocol: AnyObject {
     var exercisesCount: Int { get }
     var onUpdate: (() -> Void)? { get set }
     var onNext: ((WorkoutModel) -> Void)? { get set }
-    func workoutDurationUpdate(minuts: Int)
+    func workoutDurationUpdate(minutes: Int)
     func exercisesCountUpdate(count: Int)
     func next()
 }
@@ -31,8 +31,8 @@ final class SetupViewModel: SetupViewModelProtocol {
         self.exercisesCount = WorkoutModelConstants.exercisesCountDefault
     }
     
-    func workoutDurationUpdate(minuts: Int) {
-        self.workoutDurationMinutes = minuts
+    func workoutDurationUpdate(minutes: Int) {
+        self.workoutDurationMinutes = minutes
         self.onUpdate?()
     }
 

@@ -16,7 +16,7 @@ protocol FinishViewModelProtocol: AnyObject {
 
 final class FinishViewModel: FinishViewModelProtocol {
     
-    var win: String
+    let win: String
     var onToMain: (() -> Void)?
 
     init() {

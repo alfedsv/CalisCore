@@ -8,40 +8,45 @@
 
 import UIKit
 
+/// Контроллер экрана выполнения упражнения.
+///
+/// Управляет анимацией, прогресс-барами и переходами между фазами.
 final class WorkoutViewController: UIViewController {
+
+    // MARK: - Dependencies
 
     private let viewModel: WorkoutViewModelProtocol
 
+    // MARK: - UI Elements
+
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-
     private let titleExerciseLabel = MainTitleLabel()
     private let animationView = ExerciseAnimationView()
-
     private let titleLabel = TitleLabel()
     private let descriptionLabel = DescriptionLabel()
-
     private let setsCountLabel = DescriptionExerciseLabel()
     private let durationSetsLabel = DescriptionExerciseLabel()
     private let durationRestLabel = DescriptionExerciseLabel()
     private let setsCountNumberLabel = DescriptionExerciseLabel()
     private let durationSetsNumberLabel = DescriptionExerciseLabel()
     private let durationRestNumberLabel = DescriptionExerciseLabel()
-
     private let controlButton = ControlLargeButton()
-    private var progressViews: [UIProgressView] = []
-
-    private var stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 12
         stackView.alignment = .fill
         return stackView
     }()
-
     private let nextButton = LargeButton(title: "largeButton.next".localized, isActive: true)
 
+    // MARK: - State
+
+    private var progressViews: [UIProgressView] = []
     private var pendingTarget: CurrentPhase?
+
+    // MARK: - Init
 
     init(workoutModel: WorkoutModel) {
         self.viewModel = WorkoutViewModel(workoutModel: workoutModel)
@@ -77,7 +82,7 @@ final class WorkoutViewController: UIViewController {
         animationView.pauseRendering()
     }
 
-    // MARK: - Bind
+    // MARK: - Binding
 
     private func bindViewModel() {
         viewModel.onUpdate = { [weak self] in
@@ -88,7 +93,7 @@ final class WorkoutViewController: UIViewController {
             self?.controlButton.currentState = .running
         }
 
-        viewModel.onStoped = { [weak self] in
+        viewModel.onStopped = { [weak self] in
             self?.controlButton.currentState = .stopped
         }
 
@@ -111,7 +116,7 @@ final class WorkoutViewController: UIViewController {
         }
     }
 
-    // MARK: - UI setup
+    // MARK: - Setup UI
 
     private func setupUI() {
         view.backgroundColor = .white
@@ -119,10 +124,11 @@ final class WorkoutViewController: UIViewController {
         scrollView.addSubview(contentView)
         titleExerciseLabel.text = "exercise.title".localized + " " + String(viewModel.exerciseNumber) + " / " + String(viewModel.exercisesCount)
         contentView.addSubview(titleExerciseLabel)
-
         contentView.addSubview(animationView)
-        animationView.layer.borderWidth = 1 //tmp
-        animationView.layer.borderColor = UIColor.black.cgColor //tmp
+
+        // TODO: убрать border после отладки камеры
+        animationView.layer.borderWidth = 1
+        animationView.layer.borderColor = UIColor.black.cgColor
         
         let scenes = viewModel.exerciseModel.exerciseScenes
         var toPreload: [SceneModel] = [scenes.idle, scenes.workoutScene]
@@ -147,9 +153,9 @@ final class WorkoutViewController: UIViewController {
         setsCountLabel.text = "exercise.setsCount".localized
         setsCountNumberLabel.text = String(viewModel.exerciseModel.setsCount)
         durationSetsLabel.text = "exercise.durationSets".localized
-        durationSetsNumberLabel.text = String(viewModel.exerciseModel.setDuration) + " " + "exercise.secunds".localized
+        durationSetsNumberLabel.text = String(viewModel.exerciseModel.setDuration) + " " + "exercise.seconds".localized
         durationRestLabel.text = "exercise.durationRest".localized
-        durationRestNumberLabel.text = String(viewModel.exerciseModel.recoveryDuration) + " " + "exercise.secunds".localized
+        durationRestNumberLabel.text = String(viewModel.exerciseModel.recoveryDuration) + " " + "exercise.seconds".localized
         setsCountLabel.setContentHuggingPriority(.required, for: .horizontal)
         setsCountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         durationSetsLabel.setContentHuggingPriority(.required, for: .horizontal)
@@ -161,7 +167,6 @@ final class WorkoutViewController: UIViewController {
         controlButton.currentState = viewModel.exerciseModel.currentState
         controlButton.addTarget(self, action: #selector(controlButtonTapped), for: .touchUpInside)
         contentView.addSubview(stackView)
-
         for _ in 0..<viewModel.exerciseModel.setsCount {
             let (setContainer, setProgress) = createStepContainer(title: "exercise.label.set".localized, progress: 0.0, tintColor: UIColor(named: AppConstants.Colors.progressBarSet))
             stackView.addArrangedSubview(setContainer)
@@ -171,7 +176,6 @@ final class WorkoutViewController: UIViewController {
             stackView.addArrangedSubview(restContainer)
             progressViews.append(restProgress)
         }
-
         contentView.addSubview(nextButton)
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         setupConstraints()
@@ -193,11 +197,8 @@ final class WorkoutViewController: UIViewController {
     private func startTransition(to target: CurrentPhase) {
         let model = viewModel.exerciseModel
         let scenes = model.exerciseScenes
-
         let goingToWorkout = (model.currentPhase == .idle)
-        let transitionScene = goingToWorkout ? scenes.idleToWorkoutScene
-                                             : scenes.workoutToIdleScene
-
+        let transitionScene = goingToWorkout ? scenes.idleToWorkoutScene : scenes.workoutToIdleScene
         // Нет переходного клипа — переключаемся мгновенно
         guard let transitionScene = transitionScene else {
             model.currentPhase = target
@@ -205,7 +206,6 @@ final class WorkoutViewController: UIViewController {
             playLoop(for: target)
             return
         }
-
         model.currentPhase = .transition
         pendingTarget = target
         animationView.play(scene: transitionScene, loop: false) { [weak self] in
@@ -253,17 +253,13 @@ final class WorkoutViewController: UIViewController {
 
     private func updateProgressBars() {
         guard !progressViews.isEmpty else { return }
-
         let currentProgress = viewModel.exerciseModel.progress
-
         var durations: [Int] = []
         for _ in 0..<viewModel.exerciseModel.setsCount {
             durations.append(viewModel.exerciseModel.setDuration)
             durations.append(viewModel.exerciseModel.recoveryDuration)
         }
-
         guard progressViews.count == durations.count else { return }
-
         var accumulated = 0
         for (index, duration) in durations.enumerated() {
             let progressView = progressViews[index]
@@ -279,6 +275,8 @@ final class WorkoutViewController: UIViewController {
         }
     }
 
+    // MARK: - Actions
+
     @objc
     private func controlButtonTapped() {
         viewModel.control()
@@ -292,8 +290,8 @@ final class WorkoutViewController: UIViewController {
 
 // MARK: - Layout
 
-extension WorkoutViewController {
-    private func setupConstraints() {
+private extension WorkoutViewController {
+    func setupConstraints() {
         [
             scrollView,
             contentView,
