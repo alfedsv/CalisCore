@@ -18,6 +18,7 @@ final class FinishViewController: UIViewController {
         label.font = .systemFont(ofSize: 20)
         label.textColor = UIColor(named: AppConstants.Colors.textRed)
         label.textAlignment = .center
+        label.numberOfLines = 0
         return label
     }()
 
