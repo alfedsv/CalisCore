@@ -22,7 +22,7 @@ final class FinishViewController: UIViewController {
         return label
     }()
 
-    private let toMainButton = LargeButton(title: "largeButton.toMain".localized)
+    private let toMainButton = LargeButton(title: "largeButton.toMain".localized, isActive: true)
     
     init() {
         self.viewModel = FinishViewModel()
@@ -32,6 +32,8 @@ final class FinishViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +74,9 @@ final class FinishViewController: UIViewController {
     }
 
 }
+
+// MARK: - Layout
+
 extension FinishViewController {
     private func setupConstraints() {
         [

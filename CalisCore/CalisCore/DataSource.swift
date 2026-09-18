@@ -105,5 +105,19 @@ struct DataSource {
                     workoutScene: SceneModel(name: "circle_crunch", radiusOrbitMul: 2.5, azimuth: .pi / 8, elevation: .pi / 4, scaledCenterMulX: 0, scaledCenterMulY: 0, scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(name: "situps_to_idle", radiusOrbitMul: 2.5, azimuth: .pi / 8, elevation: .pi / 4, scaledCenterMulX: 0, scaledCenterMulY: 0, scaledCenterMulZ: 0),
                     isWorkoutReversed: true)),
+        ExerciseRawModel(name: getName(named: "squat"), description: getDescription(named: "squat"),
+                 positions: ExerciseScenesModel(
+                    idle: idle,
+                    idleToWorkoutScene: nil,
+                    workoutScene: SceneModel(name: "squat", radiusOrbitMul: 2.5, azimuth: .pi / 8, elevation: .pi / 4, scaledCenterMulX: 0, scaledCenterMulY: 0, scaledCenterMulZ: 0),
+                    workoutToIdleScene: nil,
+                    isWorkoutReversed: true)),
+        ExerciseRawModel(name: getName(named: "squat_bent_arms"), description: getDescription(named: "squat_bent_arms"),
+                 positions: ExerciseScenesModel(
+                    idle: idle,
+                    idleToWorkoutScene: nil,
+                    workoutScene: SceneModel(name: "squat_bent_arms", radiusOrbitMul: 2.5, azimuth: .pi / 8, elevation: .pi / 4, scaledCenterMulX: 0, scaledCenterMulY: 0, scaledCenterMulZ: 0),
+                    workoutToIdleScene: nil,
+                    isWorkoutReversed: true)),
     ]
 }

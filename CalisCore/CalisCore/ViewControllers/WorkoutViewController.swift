@@ -39,7 +39,7 @@ final class WorkoutViewController: UIViewController {
         return stackView
     }()
 
-    private let nextButton = LargeButton(title: "largeButton.next".localized)
+    private let nextButton = LargeButton(title: "largeButton.next".localized, isActive: true)
 
     private var pendingTarget: CurrentPhase?
 
@@ -51,6 +51,8 @@ final class WorkoutViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -161,11 +163,11 @@ final class WorkoutViewController: UIViewController {
         contentView.addSubview(stackView)
 
         for _ in 0..<viewModel.exerciseModel.setsCount {
-            let (setContainer, setProgress) = createStepContainer(title: "Подход", progress: 0.0, tintColor: UIColor(named: AppConstants.Colors.progressBarSet))
+            let (setContainer, setProgress) = createStepContainer(title: "exercise.label.set".localized, progress: 0.0, tintColor: UIColor(named: AppConstants.Colors.progressBarSet))
             stackView.addArrangedSubview(setContainer)
             progressViews.append(setProgress)
 
-            let (restContainer, restProgress) = createStepContainer(title: "Отдых", progress: 0.0, tintColor: UIColor(named: AppConstants.Colors.progressBarRest))
+            let (restContainer, restProgress) = createStepContainer(title: "exercise.label.rest".localized, progress: 0.0, tintColor: UIColor(named: AppConstants.Colors.progressBarRest))
             stackView.addArrangedSubview(restContainer)
             progressViews.append(restProgress)
         }
@@ -287,6 +289,8 @@ final class WorkoutViewController: UIViewController {
         viewModel.next()
     }
 }
+
+// MARK: - Layout
 
 extension WorkoutViewController {
     private func setupConstraints() {

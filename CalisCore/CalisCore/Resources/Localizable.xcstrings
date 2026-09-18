@@ -1,9 +1,100 @@
 {
   "sourceLanguage" : "ru",
   "strings" : {
+    "consent.checkbox" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I have read and agree to the Terms of Service and Privacy Policy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я прочитал(а) и согласен(на) с условиями Пользовательского соглашения и Политикой конфиденциальности"
+          }
+        }
+      }
+    },
+    "consent.legal.privacy.header" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PRIVACY POLICY"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ"
+          }
+        }
+      }
+    },
+    "consent.legal.terms.header" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TERMS OF SERVICE"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ"
+          }
+        }
+      }
+    },
+    "consent.subtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please review the terms of use of the app"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пожалуйста, ознакомьтесь с условиями использования приложения"
+          }
+        }
+      }
+    },
+    "consent.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Before You Start"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перед началом"
+          }
+        }
+      }
+    },
     "controlButton.finished" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finished"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15,6 +106,12 @@
     "controlButton.onceMore" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Once more"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26,6 +123,12 @@
     "controlButton.start" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37,6 +140,12 @@
     "controlButton.stop" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48,6 +157,12 @@
     "exercise.durationRest" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rest time:"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -59,6 +174,12 @@
     "exercise.durationSets" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work time:"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -67,9 +188,49 @@
         }
       }
     },
+    "exercise.label.rest" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rest"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отдых"
+          }
+        }
+      }
+    },
+    "exercise.label.set" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подход"
+          }
+        }
+      }
+    },
     "exercise.secunds" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "sec"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81,6 +242,12 @@
     "exercise.setsCount" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sets:"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92,6 +259,12 @@
     "exercise.title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exercise"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103,6 +276,12 @@
     "finish.title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workout complete!"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114,6 +293,12 @@
     "finish.win0" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strength grows every day!"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -125,6 +310,12 @@
     "finish.win1" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All exercises are behind you!"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -136,6 +327,12 @@
     "finish.win2" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are getting stronger!"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -147,10 +344,16 @@
     "finish.win3" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your strength is in your discipline!"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Твоя сила — в твоей дисциплине!"
+            "value" : "Твоя сила — в твоей дисциплине!"
           }
         }
       }
@@ -158,6 +361,12 @@
     "finish.win4" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One more step to your best shape!"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -169,6 +378,12 @@
     "finish.win5" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your strength is leveled up!"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -180,6 +395,12 @@
     "finish.win6" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your endurance is growing!"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -191,10 +412,16 @@
     "finish.win7" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy and strength are now your allies!"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Энергия и сила — теперь твои союзники!"
+            "value" : "Энергия и сила — теперь твои союзники!"
           }
         }
       }
@@ -202,6 +429,12 @@
     "finish.win8" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are building strength brick by brick!"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -213,6 +446,12 @@
     "largeButton.begin" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start workout"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -221,9 +460,32 @@
         }
       }
     },
+    "largeButton.consent" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить"
+          }
+        }
+      }
+    },
     "largeButton.next" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -235,6 +497,12 @@
     "largeButton.toMain" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To main page"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -246,6 +514,12 @@
     "setupTitle.duration" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workout duration"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -257,6 +531,12 @@
     "setupTitle.exercisesCount" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number of exercises"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -268,6 +548,12 @@
     "slider.minutes" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "min"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -279,6 +565,12 @@
     "slider.variants" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "variants"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -307,6 +599,12 @@
     "workout.advise.bicycle_situp" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Start slowly, focusing on the torso crunch rather than speed. If it is hard to keep your hands behind your head, place them on your chest or cross them over your shoulders. If you feel discomfort in your neck, reduce the range of shoulder blade lift. This exercise is effective at the end of an ab workout or in circuit training."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -318,6 +616,12 @@
     "workout.advise.burpee" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Beginners can do an easier version: without jumping — stepping back and forward, without a push-up or with a knee push-up. Keep your breathing even and land softly. If you have knee, back, or wrist pain, replace it with low-impact variations."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -329,6 +633,12 @@
     "workout.advise.circle_crunch" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Beginners can do the exercise with their feet on the floor and a smaller range of motion. If it is hard to keep your hands behind your head, place them on your chest or cross them over your shoulders. To make it harder, raise your legs or perform the circles more slowly. If you feel discomfort in your neck or lower back, reduce the range of motion or replace it with regular crunches."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -340,6 +650,12 @@
     "workout.advise.cross_jumps" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Beginners can do an easier version without jumping — step to the side while crossing your legs and arms. Reduce the range of motion and pace, and focus on a soft landing. If you have knee, ankle, or lower back pain, replace the exercise with low-impact cardio."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -351,6 +667,12 @@
     "workout.advise.cross_jumps_rotation" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Beginners can do an easier version without jumping: step to the side with a torso turn and crossing your arms. Make sure the rotation is smooth and controlled, and your knees stay soft. If you have knee, ankle, or lower back pain, replace the exercise with low-impact cardio or regular cross jacks without rotation."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -362,6 +684,12 @@
     "workout.advise.jump_pushup" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Start only after you have confidently mastered classic push-ups (at least 10–15 clean reps). First master push-ups with one hand lifting off or from a small elevation. If it is too hard, replace them with regular push-ups or knee push-ups. If you have wrist, elbow, or shoulder pain, exclude this exercise. Do not perform it on a hard floor without cushioning — use a mat."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -373,6 +701,12 @@
     "workout.advise.jumping_jacks" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Beginners can do an easier version without jumping: alternately step one foot to the side and raise your arms. Beginners can also raise their arms only to shoulder level. Focus on a soft landing and even breathing. If you have knee, ankle, or back pain, it is better to replace the exercise with low-impact cardio."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -384,6 +718,12 @@
     "workout.advise.pike" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Beginners can perform it with slightly bent knees and a small range of motion. If it is hard to keep your hips high, take fewer steps but maintain form. If you have wrist pain, use push-up stands, dumbbells, or parallel bars. Exercise on a mat. The main thing is not speed, but control and high hips."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -395,6 +735,12 @@
     "workout.advise.pistol" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Beginners should start with easier variations: single-leg squat with support (holding a rack, door, or TRX), box or chair squat (sitting down and standing up on one leg), or a counterbalanced pistol squat (dumbbell in front of you). Be sure to work on ankle mobility and hamstring flexibility. If you have knee or lower back pain, it is better to postpone the exercise or perform it under a trainer's supervision."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -406,6 +752,12 @@
     "workout.advise.plank" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Focus on quality, not quantity. To make it harder, you can lift one leg or arm."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -417,6 +769,12 @@
     "workout.advise.pushup" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: If it is difficult, start with knee push-ups or incline push-ups (hands on a bench). Make sure your torso stays braced. To increase the load, you can put your feet on an elevation."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -428,6 +786,12 @@
     "workout.advise.situps" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Start with a small number of repetitions at a slow pace. If the exercise is hard or you feel discomfort in your lower back, replace it with crunches — they are safer for your back. To make it harder, you can hold a plate or dumbbell on your chest. If you have neck or lower back pain, it is better to exclude this exercise."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -436,9 +800,49 @@
         }
       }
     },
+    "workout.advise.squat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Beginners can squat down to a chair or bench, lightly holding onto support. Start the movement by pushing your hips back, not just bending your knees. To make it harder, slow down the tempo, add a pause at the bottom, or extend your arms forward."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tСоветы: Новичкам можно приседать до стула или скамьи, слегка держась за опору. Следите за тем, чтобы движение начиналось с отведения таза назад, а не с сгибания коленей. Для усложнения можно замедлить темп, добавить паузу внизу или выполнять с вытянутыми руками."
+          }
+        }
+      }
+    },
+    "workout.advise.squat_bent_arms" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTips: Keep your elbows slightly tucked toward your torso and your hands at chest level. If balance is difficult, reduce your squat depth or slow down the tempo. This variation is good for practicing squat technique without arm assistance and for learning to keep your torso stable. Start with 10–15 reps and progress gradually."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tСоветы: Держите локти слегка прижатыми к корпусу, а кисти — на уровне груди. Если тяжело сохранять равновесие, уменьшите глубину приседа или замедлите темп. Это упражнение хорошо подходит для отработки техники приседа, когда нужно убрать помощь рук и научиться держать корпус стабильно. "
+          }
+        }
+      }
+    },
     "workout.description.bicycle_situp" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: rectus abdominis and obliques, core muscles, hip flexors. It works the lateral abs well and develops coordination."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -450,6 +854,12 @@
     "workout.description.burpee" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: the whole body — chest, triceps, shoulders, core, legs, and glutes. It also strongly loads the cardiovascular system and develops endurance, coordination, and explosive strength."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -461,6 +871,12 @@
     "workout.description.circle_crunch" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: rectus abdominis and obliques, core muscles, hip flexors. The exercise develops abdominal strength, coordination, and torso control, especially the lateral muscles."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -472,6 +888,12 @@
     "workout.description.cross_jumps" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: cardiovascular system, endurance, and coordination. It engages leg muscles (calves, quadriceps, hip adductors and abductors), glutes, core, and shoulders."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -483,6 +905,12 @@
     "workout.description.cross_jumps_rotation" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: cardiovascular system and endurance, core muscles (especially obliques), glutes, quadriceps, thigh and shoulder muscles. This plyometric exercise develops coordination, explosive strength, and the ability to stabilize the torso during rotation."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -494,6 +922,12 @@
     "workout.description.jump_pushup" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: chest muscles, triceps, anterior deltoids, core. It additionally develops upper-body explosive strength, power, and coordination. This is a plyometric exercise that requires good basic conditioning."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -505,6 +939,12 @@
     "workout.description.jumping_jacks" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: cardiovascular system and endurance, coordination, leg muscles (calves, quadriceps, thigh muscles), shoulders, arms, and core. It works well as a warm-up or cardio exercise in interval training."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -516,6 +956,12 @@
     "workout.description.pike" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: shoulders, core, hamstrings, calves, back muscles. It also develops mobility of the shoulder girdle and ankles, coordination, and endurance."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -527,6 +973,12 @@
     "workout.description.pistol" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: quadriceps, glutes, hamstrings, core, as well as balance, coordination, and mobility of the ankle and hip joints. This is one of the most difficult single-leg exercises."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -538,6 +990,12 @@
     "workout.description.plank" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: core muscles (rectus abdominis and transversus abdominis, obliques), back muscles, shoulders, glutes, legs. The exercise develops static endurance and torso stability."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -549,6 +1007,12 @@
     "workout.description.pushup" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: pectoralis major, triceps, anterior deltoids, core muscles (as stabilizers). The exercise develops upper-body strength."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -560,6 +1024,12 @@
     "workout.description.situps" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: rectus abdominis, obliques, hip flexors (iliopsoas), as well as core muscles. The exercise develops abdominal strength and endurance."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -568,9 +1038,49 @@
         }
       }
     },
+    "workout.description.squat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: quadriceps, glutes, hamstrings, calves, and core. It develops leg strength, hip and ankle mobility, balance, and endurance."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tЧто тренирует: квадрицепсы, ягодицы, заднюю поверхность бедра, икры, мышцы кора. Развивает силу ног, подвижность тазобедренного и голеностопного суставов, баланс и выносливость."
+          }
+        }
+      }
+    },
+    "workout.description.squat_bent_arms" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tWhat it trains: the same muscles as the regular air squat — quadriceps, glutes, hamstrings, calves, and core. It places slightly more demand on the core and stabilizer muscles because the arms do not help with balance."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tЧто тренирует: те же мышцы, что и в обычном воздушном приседе — квадрицепсы, ягодицы, заднюю поверхность бедра, икры, мышцы кора. Дополнительно чуть больше нагрузки на корпус и мышцы-стабилизаторы, так как руки не помогают удерживать баланс."
+          }
+        }
+      }
+    },
     "workout.name.bicycle_situp" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bicycle crunches"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -582,6 +1092,12 @@
     "workout.name.burpee" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Burpee"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -593,6 +1109,12 @@
     "workout.name.circle_crunch" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Circle crunches"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -604,6 +1126,12 @@
     "workout.name.cross_jumps" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cross jumps"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -615,6 +1143,12 @@
     "workout.name.cross_jumps_rotation" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cross jumps with rotation"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -626,6 +1160,12 @@
     "workout.name.jump_pushup" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jump push-ups / Explosive push-ups"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -637,6 +1177,12 @@
     "workout.name.jumping_jacks" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jumping jacks"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -648,6 +1194,12 @@
     "workout.name.pike" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pike walk"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -659,6 +1211,12 @@
     "workout.name.pistol" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pistol squats"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -670,6 +1228,12 @@
     "workout.name.plank" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plank (classic on forearms)"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -681,6 +1245,12 @@
     "workout.name.pushup" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Push-ups (classic)"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -692,6 +1262,12 @@
     "workout.name.situps" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sit-ups"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -700,9 +1276,49 @@
         }
       }
     },
+    "workout.name.squat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Squat"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Присед"
+          }
+        }
+      }
+    },
+    "workout.name.squat_bent_arms" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Squat Bent Arms"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Присед с согнутыми руками"
+          }
+        }
+      }
+    },
     "workout.technique.bicycle_situp" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Lie on your back with your lower back pressed to the floor. Hands behind your head, fingers not interlocked, elbows out. Legs raised, knees bent at ~90°.\n\t2. On an exhale, lift your shoulder blades off the floor and reach your right elbow toward your left knee while extending your right leg forward (without touching the floor).\n\t3. On an inhale, return to center, then repeat on the other side: left elbow to right knee, left leg extends.\n\t4. The movement is smooth and controlled, as if pedaling. Keep your neck relaxed and your chin not pressed to your chest."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -714,6 +1330,12 @@
     "workout.technique.burpee" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Starting position — standing straight, feet shoulder-width apart, arms along your body.\n\t2. Squat down and place your palms on the floor in front of you.\n\t3. Jump (or step) your legs back into a plank. Your body should be straight.\n\t4. Perform one push-up (classic or from your knees — depending on your fitness level).\n\t5. Jump (or step) your legs back to your hands, ending in a squat.\n\t6. From the squat, jump up, extending your arms overhead. You can clap your hands.\n\t7. Land softly on the balls of your feet, slightly bending your knees, and immediately move to the next repetition."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -725,6 +1347,12 @@
     "workout.technique.circle_crunch" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Lie on your back, knees bent, feet on the floor (or raised — for more difficulty). Hands behind your head, fingers not interlocked, elbows out.\n\t2. Tighten your abs and lift your shoulder blades off the floor — your upper torso in a slight crunch. Your lower back is pressed to the floor.\n\t3. Begin to trace a circle with your upper torso: for example, reach your right elbow toward your left knee, then through center toward your right knee with your left elbow, then return to the starting position. The movement is smooth and continuous, as if drawing a circle.\n\t4. Perform a circle in one direction, then the same number in the other. Breathe evenly: exhale on effort, inhale on return.\n\t5. Keep the range of motion comfortable, without jerking. Keep your neck relaxed and your chin not pressed to your chest."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -736,6 +1364,12 @@
     "workout.technique.cross_jumps" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Starting position — standing straight, feet hip-width apart, arms along your body or bent in front of your chest.\n\t2. Jump, spreading your legs to the sides and raising your arms out to the sides and up (as in a jumping jack).\n\t3. On the next jump, cross your legs (one in front of the other) and cross your arms in front of your chest.\n\t4. Alternate jumps: spread — cross. Keep your torso straight, abs slightly engaged, gaze forward.\n\t5. Land softly on the balls of your feet, knees slightly bent for cushioning. Breathe evenly, without holding your breath."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -747,6 +1381,12 @@
     "workout.technique.cross_jumps_rotation" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Starting position — standing straight, feet hip-width apart, arms lowered along your body or bent in front of your chest. Torso slightly braced.\n\t2. Jump while spreading your legs slightly wider than your shoulders and rotating your torso (hips and shoulders) to one side — for example, to the right. Your arms open to the sides or one arm reaches across your body.\n\t3. Land in a stable position, controlling the rotation with your core muscles, not with momentum.\n\t4. On the next jump, return to center or immediately switch to rotating to the other side, crossing the opposite leg and arm.\n\t5. The movement should be rhythmic: jump — turn/cross — return. Breathe evenly, without holding your breath."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -758,6 +1398,12 @@
     "workout.technique.jump_pushup" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Take a push-up position: palms shoulder-width apart (or slightly wider), body a straight line from head to heels. Abs and glutes engaged.\n\t2. Lower yourself by bending your arms at the elbows, as in a classic push-up. Elbows point back at ~45°, chest almost touches the floor.\n\t3. With a powerful explosive effort, push yourself up so your palms leave the floor. At the top, you can clap your palms or simply lift your hands.\n\t4. Land softly on your palms, slightly bending your elbows for cushioning, and immediately move to the next repetition (or hold in a plank if you need to regain control).\n\t5. Breathing: inhale — while lowering, sharp exhale — during the explosive push."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -769,6 +1415,12 @@
     "workout.technique.jumping_jacks" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Starting position: standing straight, feet together, arms lowered along your body.\n\t2. Jump while spreading your feet shoulder-width apart (or slightly wider) and raising your arms out to the sides and up — overhead. You can clap your palms.\n\t3. On the second jump, return to the starting position: feet together, arms down.\n\t4. Keep your torso straight, abs slightly engaged, gaze forward.\n\t5. Land softly on the balls of your feet, slightly bending your knees. Breathe evenly, without holding your breath."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -780,6 +1432,12 @@
     "workout.technique.pike" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Take a pike position: palms on the floor slightly wider than your shoulders, feet on the floor, hips raised high. Your body forms an angle. Keep your knees straight if possible, but if you lack flexibility, bend them slightly. Heels reach toward the floor.\n\t2. Begin moving forward: take small alternating steps with your hands, then bring your feet forward in small steps. Keep your hips high, back straight, torso braced.\n\t3. Move to a comfortable point and then move back the same way: first small steps with your hands back, then your feet back. This creates a back-and-forth walk on your hands and feet.\n\t4. Keep the movements small and controlled. Do not swing your hips or arch your lower back. Breathe evenly, without holding your breath."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -791,6 +1449,12 @@
     "workout.technique.pistol" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Stand straight, feet shoulder-width apart. Shift your weight onto one leg, extend the other forward, slightly off the floor. Extend your arms in front of you for balance.\n\t2. Slowly squat on the supporting leg, pushing your hips back as in a regular squat. Keep the heel of the supporting leg on the floor, your knee tracking over your toes and not caving inward.\n\t3. Lower as far as flexibility and control allow. Keep your back straight, chest open, gaze forward.\n\t4. On an exhale, powerfully push yourself up, fully extending the supporting leg. The extended leg remains off the floor.\n\t5. Perform an equal number of repetitions on each leg."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -802,6 +1466,12 @@
     "workout.technique.plank" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Lie on your stomach, then rise onto your forearms and toes.\n\t2. Place your elbows directly under your shoulder joints, forearms parallel to each other (or slightly brought together).\n\t3. Your body forms a straight line from head to heels. Do not let your hips sag or your glutes rise up.\n\t4. Tighten your abs, glutes, and thighs. Your neck is an extension of your spine, gaze at the floor in front of you.\n\t5. Breathe evenly, without holding your breath. Hold the position for the set time"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -813,6 +1483,12 @@
     "workout.technique.pushup" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Take a push-up position: palms shoulder-width apart (or slightly wider), fingers pointing forward, feet together or slightly apart.\n\t2. Your body is a straight line from head to heels. Abs and glutes engaged, hips neither sagging nor rising.\n\t3. On an inhale, bend your arms at the elbows and lower your chest almost to the floor. Elbows point back at ~45° to your torso, not straight out to the sides.\n\t4. On an exhale, powerfully push yourself up, fully extending your arms but not locking your elbows hard.\n\t5. Keep your neck neutral, gaze at the floor in front of you."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -824,6 +1500,12 @@
     "workout.technique.situps" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Lie on your back, knees bent at ~90°, feet fully on the floor hip-width apart.\n\t2. You can cross your arms over your chest or place them behind your head (fingers not interlocked, elbows out).\n\t3. Tighten your abs and smoothly lift your shoulder blades off the floor, then raise your torso until it touches your thighs or knees. Your lower back should not arch much.\n\t4. Exhale on the way up, inhale on the smooth lowering. Do not fall down; control the movement.\n\t5. At the bottom, do not fully relax your abs, so you maintain tension."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -832,9 +1514,49 @@
         }
       }
     },
+    "workout.technique.squat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Stand tall with feet shoulder-width apart or slightly wider, toes turned slightly out. Arms can be extended forward or held at chest level.\n\t2. Brace your core, lift your chest, and look forward. Keep your back straight.\n\t3. Inhale, push your hips back, and begin squatting by bending your knees. Your knees should track over your toes and not cave inward. Keep your heels on the floor.\n\t4. Lower to a comfortable depth: thighs parallel to the floor or slightly below. Keep a natural forward lean in your torso, but do not round your back.\n\t5. Exhale and drive up powerfully through your whole foot. Fully extend your legs and slightly squeeze your glutes at the top. Do not lock your knees hard.\n\t6. Breathing: inhale as you go down, exhale as you come up. Keep a controlled tempo, without jerking."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tТехника выполнения:\n\t1. Встаньте прямо, стопы на ширине плеч или чуть шире, носки слегка развёрнуты в стороны. Руки можно вытянуть перед собой или держать у груди.\n\t2. Напрягите пресс, расправьте грудь, взгляд направлен вперёд. Спина прямая.\n\t3. На вдохе отведите таз назад и начните приседать, сгибая колени. Колени движутся по направлению носков, не заваливаются внутрь. Пятки остаются на полу.\n\t4. Опуститесь до комфортной глубины: бёдра параллельны полу или чуть ниже. Корпус сохраняет естественный наклон, но не округляется.\n\t5. На выдохе мощным усилием выжмите себя вверх через всю стопу, полностью выпрямите ноги и слегка напрягите ягодицы в верхней точке. Колени не блокируйте жёстко.\n\t6. Дыхание: вдох — вниз, выдох — вверх. Темп контролируемый, без рывков."
+          }
+        }
+      }
+    },
+    "workout.technique.squat_bent_arms" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tTechnique:\n\t1. Stand tall with feet shoulder-width apart, toes slightly turned out. Bend your arms at the elbows to about 90 degrees, with your hands in front of your chest or at chest level. Elbows point down or slightly forward. You can lightly clench your fists or keep your palms facing each other.\n\t2. Keep your arms fixed in this position throughout the exercise. Do not swing or straighten them.\n\t3. Brace your core, lift your chest, and look forward. Inhale, push your hips back, and squat by bending your knees. Your knees should track over your toes, and your heels should stay on the floor.\n\t4. Lower until your thighs are parallel to the floor or slightly below. Keep your torso upright and avoid rounding your back.\n\t5. Exhale and drive up through your whole foot. Fully extend your legs and slightly squeeze your glutes. Your arms remain bent and fixed.\n\t6. Keep your breathing steady: inhale as you go down, exhale as you come up. Use a controlled tempo."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tТехника выполнения:\n\t1. Исходное положение — стоя прямо, стопы на ширине плеч, носки слегка развёрнуты. Руки согнуты в локтях примерно под углом 90°, кисти находятся перед грудью или на уровне груди, локти направлены вниз/вперёд. Пальцы можно слегка сжать в кулаки или держать ладонями друг к другу.\n\t2. Руки зафиксированы в этом положении на протяжении всего упражнения. Не размахивайте ими и не выпрямляйте.\n\t3. Напрягите пресс, расправьте грудь, взгляд вперёд. На вдохе отведите таз назад и приседайте, сгибая колени. Колени идут по направлению носков, пятки на полу.\n\t4. Опуститесь до параллели бёдер с полом или чуть ниже. Корпус остаётся прямым, без округления спины.\n\t5. На выдохе выжмите себя вверх через всю стопу, полностью выпрямите ноги, слегка напрягите ягодицы. Руки всё так же согнуты и зафиксированы.\n\t6. Дыхание ровное: вдох — вниз, выдох — вверх. Темп контролируемый."
+          }
+        }
+      }
+    },
     "workout.warning.bicycle_situp" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Pulling your neck with your hands — risk of cervical injury.\n\t2. Too fast a pace and using momentum.\n\t3. Lifting your lower back off the floor and arching your back.\n\t4. Elbows do not move toward your knees but simply open to the sides.\n\t5. Holding your breath.\n\t6. Lowering the extended leg to the floor and fully relaxing your abs."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -846,6 +1568,12 @@
     "workout.warning.burpee" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Sagging lower back or raised hips in the plank.\n\t2. Skipping the push-up or using a partial range of motion.\n\t3. Hard landing on the heels.\n\t4. Rounded back when squatting and placing your hands.\n\t5. Too fast a pace at the expense of technique.\n\t6. Holding your breath."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -857,6 +1585,12 @@
     "workout.warning.circle_crunch" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Pulling your neck with your hands — risk of cervical injury.\n\t2. Using momentum and too fast a pace.\n\t3. Lifting your lower back off the floor and arching your back.\n\t4. Too large a circle radius at the expense of control.\n\t5. Holding your breath.\n\t6. Fully relaxing your abs at the bottom."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -868,6 +1602,12 @@
     "workout.warning.cross_jumps" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Hard landing on the heels — impact load on the joints.\n\t2. Knees caving inward or too straight.\n\t3. Slouching, head jutting forward.\n\t4. Too fast a pace and loss of coordination.\n\t5. Holding your breath.\n\t6. Jumping too high at the expense of technique."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -879,6 +1619,12 @@
     "workout.warning.cross_jumps_rotation" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Rotation comes only from the lower back, not from the thoracic spine and hips — risk of back discomfort.\n\t2. Hard landing on the heels instead of soft cushioning on the balls of the feet.\n\t3. Knees caving inward or too straight.\n\t4. Loss of torso control, wobbling during the jump.\n\t5. Jumping too high and too fast at the expense of technique.\n\t6. Holding your breath."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -890,6 +1636,12 @@
     "workout.warning.jump_pushup" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Sagging or raising the hips — the torso must remain braced.\n\t2. Elbows flared out to the sides — risk of shoulder injury.\n\t3. Partial range of motion: the chest does not lower enough.\n\t4. Landing on straight arms without cushioning — impact load on the elbows and wrists.\n\t5. Jumping too high at the expense of technique.\n\t6. Holding your breath.\n\t7. Performing the exercise without sufficient strength — leads to loss of control and injuries."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -901,6 +1653,12 @@
     "workout.warning.jumping_jacks" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Landing on the heels — creates a hard impact load on the joints. You should land on the toes/balls of the feet and cushion softly with your knees.\n\t2. Knees caving inward or too straight.\n\t3. Arms do not rise fully or move in jerks.\n\t4. Slouching, head jutting forward.\n\t5. Jumping too high and too fast at the expense of technique.\n\t6. Holding your breath."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -912,6 +1670,12 @@
     "workout.warning.pike" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Hips drop and the exercise turns into a regular plank or bear crawl.\n\t2. Arching the lower back, rounding the back.\n\t3. Steps too large and loss of control.\n\t4. Bending the knees too much — reduces the load on the hamstrings.\n\t5. Elbows flared to the sides, palms shifted from the shoulder line.\n\t6. Holding your breath.\n\t7. Sharp movements, jerking."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -923,6 +1687,12 @@
     "workout.warning.pistol" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. The supporting knee caves inward or goes far past the toes.\n\t2. The heel lifts off the floor.\n\t3. Rounding the back, tilting the head down.\n\t4. Loss of balance due to lowering too quickly.\n\t5. The free leg touches the floor or helps you rise.\n\t6. Squatting too deep without sufficient mobility — leads to pelvic tucking and knee discomfort."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -934,6 +1704,12 @@
     "workout.warning.plank" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Lower back sagging (hips down) — risk of back injury.\t2. Hips too high (downward dog pose) — reduces abdominal load.\n\t3. Holding your breath.\n\t4. Elbows flared to the sides or shifted forward/back.\n\t5. Head tilted up or down."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -945,6 +1721,12 @@
     "workout.warning.pushup" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Sagging or raising the hips.\n\t2. Elbows flared to the sides (load shifts to the shoulders, risk of injury).\n\t3. Partial range of motion (chest does not lower enough).\n\t4. Head lowered or tilted back.\n\t5. Too fast a pace without control."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -956,10 +1738,50 @@
     "workout.warning.situps" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Pulling your neck with your hands — risk of cervical injury.\n\t2. Using momentum and jerking instead of working your abs.\n\t3. Fixing your feet (with a partner or under support) — increases load on the lower back.\n\t4. Arching your lower back strongly at the top.\n\t5. Falling down sharply.\n\t6. Holding your breath."
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "\tЧастые ошибки:\n\t1. Тянуть себя за шею руками — риск травмы шейного отдела.\n\t2. Использовать инерцию и рывки вместо работы пресса.\n\t3. Фиксировать стопы (партнёром или за опору) — увеличивает нагрузку на поясницу.\n\t4. Сильно прогибать поясницу в верхней точке.\n\t5. Резко падать вниз.\n\t6. Задерживать дыхание."
+          }
+        }
+      }
+    },
+    "workout.warning.squat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Knees caving inward or going too far past the toes.\n\t2. Heels lifting off the floor.\n\t3. Rounding the back or looking down.\n\t4. Partial range of motion (half squat).\n\t5. Going too fast and using momentum.\n\t6. Holding your breath.\n\t7. Fully relaxing at the bottom."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tЧастые ошибки:\n\t1. Колени заваливаются внутрь или выходят далеко за носки.\n\t2. Пятки отрываются от пола.\n\t3. Округление спины, наклон головы вниз.\n\t4. Неполная амплитуда (полуприсед).\n\t5. Слишком быстрый темп и работа по инерции.\n\t6. Задержка дыхания.\n\t7. Полное расслабление в нижней точке."
+          }
+        }
+      }
+    },
+    "workout.warning.squat_bent_arms" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tCommon mistakes:\n\t1. Arms dropping, straightening, or moving — this defeats the purpose of the variation.\n\t2. Knees caving inward or heels lifting.\n\t3. Rounding the back or looking down.\n\t4. Partial range of motion.\n\t5. Going too fast or making jerky movements.\n\t6. Holding your breath.\n\t7. Excessive tension in the neck and shoulders."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tЧастые ошибки:\n\t1. Руки опускаются, разгибаются или начинают двигаться — теряется смысл варианта.\n\t2. Колени заваливаются внутрь или пятки отрываются.\n\t3. Округление спины, наклон головы вниз.\n\t4. Неполная амплитуда.\n\t5. Слишком быстрый темп, рывки.\n\t6. Задержка дыхания.\n\t7. Сильное напряжение в шее и плечах."
           }
         }
       }

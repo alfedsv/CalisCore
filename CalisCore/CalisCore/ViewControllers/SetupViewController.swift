@@ -36,7 +36,7 @@ final class SetupViewController: UIViewController {
     private let durationValueLabel = DescriptionLabel()
     private let exercisesValueLabel = DescriptionLabel()
 
-    private let nextButton = LargeButton(title: "largeButton.begin".localized)
+    private let nextButton = LargeButton(title: "largeButton.begin".localized, isActive: true)
     private let versionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
@@ -56,6 +56,8 @@ final class SetupViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,6 +122,8 @@ final class SetupViewController: UIViewController {
         viewModel.next()
     }
 }
+
+// MARK: - Layout
 
 extension SetupViewController {
     private func setupConstraints() {
