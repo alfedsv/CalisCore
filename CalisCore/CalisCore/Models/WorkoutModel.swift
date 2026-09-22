@@ -12,13 +12,15 @@ final class WorkoutModel {
     var workoutDuration: Int
     var exercisesCount: Int
     var currentExerciseIndex: Int = 0
+    let workoutType: WorkoutType
 
     var exerciseModels: [ExerciseModel] = []
 
-    init(workoutDuration: Int, exercisesCount: Int) {
+    init(workoutDuration: Int, exercisesCount: Int, workoutType: WorkoutType) {
         self.workoutDuration = workoutDuration
         self.exercisesCount = exercisesCount
-        let workoutHelper = WorkoutHelper(totalDuration: workoutDuration, userExercisesCount: exercisesCount)
+        self.workoutType = workoutType
+        let workoutHelper = WorkoutHelper(totalDuration: workoutDuration, userExercisesCount: exercisesCount, workoutType: workoutType)
         exerciseModels = workoutHelper.getWorkoutExercises()
     }
 }

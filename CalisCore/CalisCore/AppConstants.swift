@@ -11,12 +11,11 @@ enum AppConstants {
     enum Layout {
         static let paddingLargeButtonBottom: CGFloat = 25
         static let paddingLargeButton: CGFloat = 45
-        
         static let buttonCornerRadius: CGFloat = 10
         static let buttonHeightStandard: CGFloat = 45
-        static let buttonHeightSmall: CGFloat = 30
-        
-        static let imageCornerRadius: CGFloat = 4
+        static let buttonHeightSmoll: CGFloat = 30
+        static let workoutTypeSpacing: CGFloat = 12
+        static let recomendationViewCornerRadius: CGFloat = 10
         static let checkboxButtonSide: CGFloat = 32
         static let animationViewPadding: CGFloat = 20
     }
@@ -36,6 +35,10 @@ enum AppConstants {
         static let buttonText = "Buttons/text"
         static let buttonUnactive = "Buttons/unactive"
         static let checkboxButton = "consent"
+        static let setupUnactive = "Buttons/setupUnactive"
+        static let setupActive = "Buttons/setupActive"
+        static let recomendationTitle = "recomendationTitle"
+        static let recomendationBackground = "recomendationBackground"
     }
     
 }

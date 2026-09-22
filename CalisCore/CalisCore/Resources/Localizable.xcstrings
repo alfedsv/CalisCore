@@ -154,6 +154,23 @@
         }
       }
     },
+    "descriptionButton.text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подробнее"
+          }
+        }
+      }
+    },
     "exercise.durationRest" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -511,6 +528,159 @@
         }
       }
     },
+    "recomendation.circuit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For the selected workout type, it is recommended to perform exercises quickly and intensely"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для выбранного типа тренировки желательно выполнять упражнения быстро и интенсивно"
+          }
+        }
+      }
+    },
+    "recomendation.endurance" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For the selected workout type, it is recommended to perform exercises at a moderate pace and rhythmically"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для выбранного типа тренировки желательновыполнять упражнения в среднем темпе и ритмично"
+          }
+        }
+      }
+    },
+    "recomendation.explosivePower" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For the selected workout type, it is recommended to perform exercises with maximum explosive effort"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для выбранного типа тренировки желательно выполнять упражнения с максимальным взрывным усилием"
+          }
+        }
+      }
+    },
+    "recomendation.strength" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For the selected workout type, it is recommended to perform exercises slowly and in a controlled manner"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для выбранного типа тренировки желательно выполнять упражнения медленно и контролируемо"
+          }
+        }
+      }
+    },
+    "recomendation.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recommendation:"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Рекомендация:"
+          }
+        }
+      }
+    },
+    "setupButton.circuit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Круговая"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Круговая"
+          }
+        }
+      }
+    },
+    "setupButton.endurance" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выносливость"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выносливость"
+          }
+        }
+      }
+    },
+    "setupButton.explosivePower" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explosive Power"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Взрывная сила"
+          }
+        }
+      }
+    },
+    "setupButton.strength" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strength"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Силовая"
+          }
+        }
+      }
+    },
     "setupTitle.duration" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -541,6 +711,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Количество упражнений"
+          }
+        }
+      }
+    },
+    "setupTitle.targetArea" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Target Area"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зона проработки"
           }
         }
       }

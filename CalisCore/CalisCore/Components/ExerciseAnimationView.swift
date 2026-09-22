@@ -58,7 +58,7 @@ final class ExerciseAnimationView: UIView {
         sceneView.scene = containerScene
         sceneView.pointOfView = cameraNode
         sceneView.autoenablesDefaultLighting = true
-        sceneView.allowsCameraControl = false
+        sceneView.allowsCameraControl = true
         sceneView.backgroundColor = .clear
         sceneView.rendersContinuously = true
         sceneView.isPlaying = true

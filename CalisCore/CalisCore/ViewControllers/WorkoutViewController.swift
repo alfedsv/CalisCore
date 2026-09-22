@@ -9,7 +9,6 @@
 import UIKit
 
 /// Контроллер экрана выполнения упражнения.
-///
 /// Управляет анимацией, прогресс-барами и переходами между фазами.
 final class WorkoutViewController: UIViewController {
 
@@ -24,7 +23,7 @@ final class WorkoutViewController: UIViewController {
     private let titleExerciseLabel = MainTitleLabel()
     private let animationView = ExerciseAnimationView()
     private let titleLabel = TitleLabel()
-    private let descriptionLabel = DescriptionLabel()
+    private let descriptionButton = DescriptionButton()
     private let setsCountLabel = DescriptionExerciseLabel()
     private let durationSetsLabel = DescriptionExerciseLabel()
     private let durationRestLabel = DescriptionExerciseLabel()
@@ -105,6 +104,16 @@ final class WorkoutViewController: UIViewController {
             self?.handleTargetPhase(phase)
         }
 
+        viewModel.onToDescription = { [weak self] title, description in
+            let vc = DescriptionViewController(title: title, description: description)
+            if let sheet = vc.sheetPresentationController {
+                sheet.detents = [.large()]
+                sheet.prefersGrabberVisible = true
+                sheet.preferredCornerRadius = 24
+            }
+            self?.present(vc, animated: true)
+        }
+
         viewModel.onNext = { [weak self] workoutModel in
             let viewController = WorkoutViewController(workoutModel: workoutModel)
             self?.navigationController?.pushViewController(viewController, animated: true)
@@ -140,7 +149,8 @@ final class WorkoutViewController: UIViewController {
         }
 
         contentView.addSubview(titleLabel)
-        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(descriptionButton)
+        descriptionButton.addTarget(self, action: #selector(descriptionButtonTapped), for: .touchUpInside)
         contentView.addSubview(setsCountLabel)
         contentView.addSubview(setsCountNumberLabel)
         contentView.addSubview(durationSetsLabel)
@@ -149,7 +159,6 @@ final class WorkoutViewController: UIViewController {
         contentView.addSubview(durationRestNumberLabel)
 
         titleLabel.text = viewModel.exerciseModel.title
-        descriptionLabel.text = viewModel.exerciseModel.description
         setsCountLabel.text = "exercise.setsCount".localized
         setsCountNumberLabel.text = String(viewModel.exerciseModel.setsCount)
         durationSetsLabel.text = "exercise.durationSets".localized
@@ -167,15 +176,7 @@ final class WorkoutViewController: UIViewController {
         controlButton.currentState = viewModel.exerciseModel.currentState
         controlButton.addTarget(self, action: #selector(controlButtonTapped), for: .touchUpInside)
         contentView.addSubview(stackView)
-        for _ in 0..<viewModel.exerciseModel.setsCount {
-            let (setContainer, setProgress) = createStepContainer(title: "exercise.label.set".localized, progress: 0.0, tintColor: UIColor(named: AppConstants.Colors.progressBarSet))
-            stackView.addArrangedSubview(setContainer)
-            progressViews.append(setProgress)
-
-            let (restContainer, restProgress) = createStepContainer(title: "exercise.label.rest".localized, progress: 0.0, tintColor: UIColor(named: AppConstants.Colors.progressBarRest))
-            stackView.addArrangedSubview(restContainer)
-            progressViews.append(restProgress)
-        }
+        setupProgressViews()
         contentView.addSubview(nextButton)
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         setupConstraints()
@@ -251,27 +252,41 @@ final class WorkoutViewController: UIViewController {
         return (container, progressView)
     }
 
-    private func updateProgressBars() {
-        guard !progressViews.isEmpty else { return }
-        let currentProgress = viewModel.exerciseModel.progress
-        var durations: [Int] = []
-        for _ in 0..<viewModel.exerciseModel.setsCount {
-            durations.append(viewModel.exerciseModel.setDuration)
-            durations.append(viewModel.exerciseModel.recoveryDuration)
+    private func setupProgressViews() {
+        progressViews = []
+        for step in viewModel.exerciseModel.steps {
+            let (title, color) = presentation(kind: step.kind)
+            let (container, progress) = createStepContainer(title: title, progress: 0, tintColor: color)
+            stackView.addArrangedSubview(container)
+            progressViews.append(progress)
         }
-        guard progressViews.count == durations.count else { return }
+    }
+
+    private func presentation(kind: ExerciseStepKindModel) -> (String, UIColor?) {
+        switch kind {
+        case .setDuration:
+            return ("exercise.label.set".localized, UIColor(named: AppConstants.Colors.progressBarSet))
+        case .restDuration, .circuitRestDuration:
+            return ("exercise.label.rest".localized, UIColor(named: AppConstants.Colors.progressBarRest))
+        }
+    }
+
+    private func updateProgressBars() {
+        let model = viewModel.exerciseModel
+        let steps = model.steps
+        guard progressViews.count == steps.count else { return }
         var accumulated = 0
-        for (index, duration) in durations.enumerated() {
+        for (index, step) in steps.enumerated() {
             let progressView = progressViews[index]
-            if currentProgress >= accumulated + duration {
-                progressView.progress = 1.0
-            } else if currentProgress > accumulated {
-                let fraction = Float(currentProgress - accumulated) / Float(duration)
-                progressView.progress = min(fraction, 1.0)
+            let p = model.progress
+            if p >= accumulated + step.duration {
+                progressView.progress = 1
+            } else if p > accumulated {
+                progressView.progress = Float(p - accumulated) / Float(step.duration)
             } else {
-                progressView.progress = 0.0
+                progressView.progress = 0
             }
-            accumulated += duration
+            accumulated += step.duration
         }
     }
 
@@ -286,6 +301,11 @@ final class WorkoutViewController: UIViewController {
     private func nextButtonTapped() {
         viewModel.next()
     }
+    
+    @objc
+    private func descriptionButtonTapped() {
+        viewModel.toDescription()
+    }
 }
 
 // MARK: - Layout
@@ -298,7 +318,7 @@ private extension WorkoutViewController {
             titleExerciseLabel,
             animationView,
             titleLabel,
-            descriptionLabel,
+            descriptionButton,
             setsCountLabel,
             setsCountNumberLabel,
             durationSetsLabel,
@@ -332,11 +352,12 @@ private extension WorkoutViewController {
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 25),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -25),
 
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 25),
-            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -25),
+            descriptionButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            descriptionButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            descriptionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            descriptionButton.heightAnchor.constraint(equalToConstant: AppConstants.Layout.buttonHeightSmoll),
 
-            setsCountLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 25),
+            setsCountLabel.topAnchor.constraint(equalTo: descriptionButton.bottomAnchor, constant: 20),
             setsCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 25),
 
             setsCountNumberLabel.leadingAnchor.constraint(equalTo: setsCountLabel.trailingAnchor, constant: 5),
@@ -365,7 +386,7 @@ private extension WorkoutViewController {
             controlButton.topAnchor.constraint(equalTo: animationView.bottomAnchor, constant: 20),
             controlButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             controlButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            controlButton.heightAnchor.constraint(equalToConstant: 30),
+            controlButton.heightAnchor.constraint(equalToConstant: AppConstants.Layout.buttonHeightSmoll),
 
             stackView.topAnchor.constraint(equalTo: controlButton.bottomAnchor, constant: 16),
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),

@@ -18,11 +18,13 @@ protocol WorkoutViewModelProtocol: AnyObject {
     var onStopped: (() -> Void)? { get set }
     var onEnded: (() -> Void)? { get set }
     var onPhaseChanged: ((CurrentPhase) -> Void)? { get set }
+    var onToDescription: ((String, String) -> Void)? { get set }
     var onNext: ((WorkoutModel) -> Void)? { get set }
     var onFinish: (() -> Void)? { get set }
 
     func control()
     func next()
+    func toDescription()
     func back()
 }
 
@@ -41,6 +43,7 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
     var onStopped: (() -> Void)?
     var onEnded: (() -> Void)?
     var onPhaseChanged: ((CurrentPhase) -> Void)?
+    var onToDescription: ((String, String) -> Void)?
     var onNext: ((WorkoutModel) -> Void)?
     var onFinish: (() -> Void)?
     
@@ -52,7 +55,19 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
     private let workoutModel: WorkoutModel
     private var timer: Timer?
     private var lastNotifiedPhase: CurrentPhase = .idle
-    
+    private var currentStepIndex: Int? {
+        var acc = 0
+        for (i, step) in exerciseModel.steps.enumerated() {
+            if exerciseModel.progress < acc + step.duration { return i }
+            acc += step.duration
+        }
+        return nil
+    }
+    private var currentStep: ExerciseStep? {
+        guard let i = currentStepIndex else { return nil }
+        return exerciseModel.steps[i]
+    }
+
     init(workoutModel: WorkoutModel) {
         self.workoutModel = workoutModel
         self.exerciseModel = workoutModel.exerciseModels[workoutModel.currentExerciseIndex]
@@ -103,15 +118,10 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
     // MARK: - Phase
     
     private func updatePhase() {
-        let m = exerciseModel
-        let target: CurrentPhase
-        if m.currentState == .running && m.progress < m.exerciseDuration {
-            let cycle = m.setDuration + m.recoveryDuration
-            let inCycle = m.progress % cycle
-            target = inCycle < m.setDuration ? .workout : .idle
-        } else {
-            target = .idle
-        }
+        let target: CurrentPhase = {
+            guard exerciseModel.currentState == .running, let step = currentStep else { return .idle }
+            return step.kind == .setDuration ? .workout : .idle
+        }()
         guard target != lastNotifiedPhase else { return }
         lastNotifiedPhase = target
         onPhaseChanged?(target)
@@ -143,6 +153,10 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
         } else if exerciseIndex == exercisesCount - 1 {
             onFinish?()
         }
+    }
+    
+    func toDescription() {
+        onToDescription?(exerciseModel.title, exerciseModel.description)
     }
 
     func back() {

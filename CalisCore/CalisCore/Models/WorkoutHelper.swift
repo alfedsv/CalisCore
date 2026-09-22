@@ -13,81 +13,114 @@ final class WorkoutHelper {
         let setDuration: Int            // длительность одного подхода (сек)
         let recoveryDuration: Int       // отдых после подхода (сек)
         let setsCount: Int              // количество подходов
-        let isLastInCycle: Bool         // если последнее упраженеие в круге
+        let restBetweenCycles: Int
     }
-
+    
     private let totalDuration: Int          // общая длительность тренировки (сек)
     private let userExercisesCount: Int     // количество упражнений, выбранное пользователем
-    private let restBetweenSets: Int = 60
-    private var restBetweenCycles: Int = 0
+    private let workoutType: WorkoutType    // тип тренировки
+
+    private var restBetweenCycles: Int {
+        return workoutType == .circuit ? 60 : 0
+    }
     
+    private let cyclesCount: Int
+    
+    private var totalExercisesCount: Int {
+        return userExercisesCount * cyclesCount
+    }
     
     private var timePerExercise: Int {
-        return totalDuration / userExercisesCount   // целочисленное деление (округление вниз)
+        let available = totalDuration - ((cyclesCount - 1) * restBetweenCycles)
+        return available / totalExercisesCount   // целочисленное деление (округление вниз)
     }
     
     private var exercisePlans: [ExercisePlanModel] {
         var plan: [ExercisePlanModel] = []
-        print("Количество упраженений:\t\(userExercisesCount)")
-        print("Время на всю тренировку:\t\(totalDuration)")
-        for exerciseIndex in 0..<userExercisesCount {
-            print("Упражнение (index):\t\(exerciseIndex)")
-            let setDuration = randomSetDuration()   // длительность подхода
-            let recoveryDuration = recoveryDuration(setDuration: setDuration)
-            let setsCount = timePerExercise / (setDuration + recoveryDuration)
-            let isLast = (exerciseIndex % userExercisesCount == userExercisesCount - 1)
-            print("\tКоличество походов:\t\(setsCount)")
-            print("\tВремя на все упраженение:\t\(timePerExercise)")
-            print("\tВремя на один подход:\t\(setDuration)")
-            print("\tВремя на одых после подхода:\t\(recoveryDuration)")
-            plan.append(ExercisePlanModel(setDuration: setDuration, recoveryDuration: recoveryDuration, setsCount: setsCount, isLastInCycle: isLast))
+        for cycle in 0..<cyclesCount {
+            for exerciseIndex in 0..<userExercisesCount {
+                let setDuration = randomSetDuration(workoutType: workoutType)   // длительность подхода
+                let recoveryDuration = recoveryDuration(workoutType: workoutType, setDuration: setDuration)
+                let cycleTime = setDuration + recoveryDuration
+                let setsCount = max(1, (timePerExercise - (restBetweenCycles)) / cycleTime)
+                let isLast = (exerciseIndex == userExercisesCount - 1)
+                let isVeryLast = (cycle == cyclesCount - 1) && isLast
+                let rest = (isLast && !isVeryLast && workoutType == .circuit) ? restBetweenCycles : 0
+                plan.append(ExercisePlanModel(
+                    setDuration: setDuration,
+                    recoveryDuration: recoveryDuration,
+                    setsCount: setsCount,
+                    restBetweenCycles: rest
+                ))
+            }
         }
         return plan
     }
-
-    init(totalDuration: Int, userExercisesCount: Int) {
+    
+    init(totalDuration: Int, userExercisesCount: Int, workoutType: WorkoutType) {
         self.totalDuration = totalDuration
         self.userExercisesCount = userExercisesCount
+        self.workoutType = workoutType
+        if workoutType == .circuit {
+            self.cyclesCount = Int.randomTriangular(min: 1, max: 7, mode: 4)
+        } else {
+            self.cyclesCount = 1
+        }
     }
-
+    
     func getWorkoutExercises() -> [ExerciseModel] {
         let exs: [ExerciseRawModel] = DataSource.exercises
         guard exs.count >= userExercisesCount else {
-            print("[ERROR] Недостаточно упражнений в базе для выбранного количества")
+            print("[ERROR] Недостаточно упражнений в базе: нужно \(userExercisesCount), есть \(exs.count)")
             return []
         }
-        let exercises = exs.shuffled().prefix(userExercisesCount).map { $0 }
-        guard exercises.count == exercisePlans.count else {
-            print("[ERROR] exercises.count (\(exercises.count)) != exercisePlans.count (\(exercisePlans.count))")
+        let pickedExercises = Array(exs.shuffled().prefix(userExercisesCount))
+        let plans = exercisePlans
+        let expectedCount = pickedExercises.count * cyclesCount
+        guard plans.count == expectedCount else {
+            print("[ERROR] plans.count (\(plans.count)) != expected (\(expectedCount))")
             return []
         }
         var models: [ExerciseModel] = []
-        for (index, exercisePlanModel) in exercisePlans.enumerated() {
+        models.reserveCapacity(plans.count)
+        for (index, plan) in plans.enumerated() {
+            let exercise = pickedExercises[index % pickedExercises.count]
             let model = ExerciseModel(
-                id: exercises[index].id,
+                id: exercise.id,
                 index: index,
-                title: exercises[index].name,
-                description: exercises[index].description,
-                exerciseScenes: exercises[index].exerciseScenes,
-                setDuration: exercisePlanModel.setDuration,
-                recoveryDuration: exercisePlanModel.recoveryDuration,
-                setsCount: exercisePlanModel.setsCount
+                title: exercise.name,
+                description: exercise.description,
+                exerciseScenes: exercise.exerciseScenes,
+                setDuration: plan.setDuration,
+                recoveryDuration: plan.recoveryDuration,
+                setsCount: plan.setsCount,
+                restBetweenCycles: plan.restBetweenCycles
             )
             models.append(model)
         }
         return models
     }
-
+    
     // Генерация длительности подхода (кратно 5)
-    private func randomSetDuration() -> Int {
-        let range: ClosedRange<Int> = 45...90
+    private func randomSetDuration(workoutType: WorkoutType) -> Int {
+        let range: ClosedRange<Int>
+        switch workoutType {
+        case .strength: range = 45...90
+        case .endurance: range = 60...120
+        case .explosivePower: range = 15...30
+        case .circuit: range = 40...60
+        }
         let raw = Int.random(in: range)
         return (raw / 5) * 5   // округление вниз до кратного 5
     }
     
     // Время восстановления после подхода
-    private func recoveryDuration(setDuration: Int) -> Int {
-        return setDuration
+    private func recoveryDuration(workoutType: WorkoutType, setDuration: Int) -> Int {
+        switch workoutType {
+        case .strength: return setDuration
+        case .endurance: return setDuration / 2
+        case .explosivePower: return setDuration * 2
+        case .circuit: return setDuration / 3
+        }
     }
-    
 }

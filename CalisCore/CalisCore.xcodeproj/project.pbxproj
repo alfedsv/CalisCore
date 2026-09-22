@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		D06B254C3062C49800A00588 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D03A8989305975800068775C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D03A8990305975800068775C;
+			remoteInfo = CalisCore;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		D03A8991305975800068775C /* CalisCore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalisCore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D06B25483062C49800A00588 /* CalisCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalisCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -29,10 +40,22 @@
 			path = CalisCore;
 			sourceTree = "<group>";
 		};
+		D06B25493062C49800A00588 /* CalisCoreTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CalisCoreTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		D03A898E305975800068775C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D06B25453062C49800A00588 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				D03A8993305975800068775C /* CalisCore */,
+				D06B25493062C49800A00588 /* CalisCoreTests */,
 				D03A8992305975800068775C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				D03A8991305975800068775C /* CalisCore.app */,
+				D06B25483062C49800A00588 /* CalisCoreTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,6 +108,29 @@
 			productReference = D03A8991305975800068775C /* CalisCore.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D06B25473062C49800A00588 /* CalisCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D06B254E3062C49800A00588 /* Build configuration list for PBXNativeTarget "CalisCoreTests" */;
+			buildPhases = (
+				D06B25443062C49800A00588 /* Sources */,
+				D06B25453062C49800A00588 /* Frameworks */,
+				D06B25463062C49800A00588 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D06B254D3062C49800A00588 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D06B25493062C49800A00588 /* CalisCoreTests */,
+			);
+			name = CalisCoreTests;
+			packageProductDependencies = (
+			);
+			productName = CalisCoreTests;
+			productReference = D06B25483062C49800A00588 /* CalisCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -95,6 +143,10 @@
 				TargetAttributes = {
 					D03A8990305975800068775C = {
 						CreatedOnToolsVersion = 26.2;
+					};
+					D06B25473062C49800A00588 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = D03A8990305975800068775C;
 					};
 				};
 			};
@@ -113,12 +165,20 @@
 			projectRoot = "";
 			targets = (
 				D03A8990305975800068775C /* CalisCore */,
+				D06B25473062C49800A00588 /* CalisCoreTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D03A898F305975800068775C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D06B25463062C49800A00588 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +195,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D06B25443062C49800A00588 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D06B254D3062C49800A00588 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D03A8990305975800068775C /* CalisCore */;
+			targetProxy = D06B254C3062C49800A00588 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		D03A89A5305975820068775C /* Debug */ = {
@@ -144,7 +219,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 6864P4M57B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisCore/Info.plist;
@@ -182,7 +257,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 6864P4M57B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CalisCore/Info.plist;
@@ -335,6 +410,48 @@
 			};
 			name = Release;
 		};
+		D06B254F3062C49800A00588 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6864P4M57B;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alfedsv.CalisCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CalisCore.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CalisCore";
+			};
+			name = Debug;
+		};
+		D06B25503062C49800A00588 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6864P4M57B;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alfedsv.CalisCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CalisCore.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CalisCore";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -352,6 +469,15 @@
 			buildConfigurations = (
 				D03A89A5305975820068775C /* Debug */,
 				D03A89A6305975820068775C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D06B254E3062C49800A00588 /* Build configuration list for PBXNativeTarget "CalisCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D06B254F3062C49800A00588 /* Debug */,
+				D06B25503062C49800A00588 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
