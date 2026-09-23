@@ -534,13 +534,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "For the selected workout type, it is recommended to perform exercises quickly and intensely"
+            "value" : "For the selected workout type,\nit is recommended to perform exercises\nquickly and intensely"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Для выбранного типа тренировки желательно выполнять упражнения быстро и интенсивно"
+            "value" : "Для выбранного типа тренировки\nжелательно выполнять упражнения\nбыстро и интенсивно"
           }
         }
       }
@@ -551,13 +551,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "For the selected workout type, it is recommended to perform exercises at a moderate pace and rhythmically"
+            "value" : "For the selected workout type,\nit is recommended to perform exercises\nat a moderate pace and rhythmically"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Для выбранного типа тренировки желательновыполнять упражнения в среднем темпе и ритмично"
+            "value" : "Для выбранного типа тренировки\nжелательно выполнять упражнения\nв среднем темпе и ритмично"
           }
         }
       }
@@ -568,13 +568,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "For the selected workout type, it is recommended to perform exercises with maximum explosive effort"
+            "value" : "For the selected workout type,\nit is recommended to perform exercises\nwith maximum explosive effort"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Для выбранного типа тренировки желательно выполнять упражнения с максимальным взрывным усилием"
+            "value" : "Для выбранного типа тренировки\nжелательно выполнять упражнения\nс максимальным взрывным усилием"
           }
         }
       }
@@ -585,13 +585,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "For the selected workout type, it is recommended to perform exercises slowly and in a controlled manner"
+            "value" : "For the selected workout type,\nit is recommended to perform exercises\nslowly and in a controlled manner"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Для выбранного типа тренировки желательно выполнять упражнения медленно и контролируемо"
+            "value" : "Для выбранного типа тренировки\nжелательно выполнять упражнения\nмедленно и контролируемо"
           }
         }
       }
@@ -1350,13 +1350,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jump push-ups / Explosive push-ups"
+            "value" : "Explosive push-ups"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Прыжковые отжимания / Взрывные отжимания"
+            "value" : "Взрывные отжимания"
           }
         }
       }
@@ -1418,13 +1418,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plank (classic on forearms)"
+            "value" : "Plank"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Планка (классическая на предплечьях)"
+            "value" : "Планка"
           }
         }
       }

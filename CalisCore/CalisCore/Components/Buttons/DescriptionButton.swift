@@ -13,7 +13,7 @@ final class DescriptionButton: UIButton {
         super.init(frame: .zero)
         titleLabel?.font = .systemFont(ofSize: 14)
         setTitleColor(UIColor(named: AppConstants.Colors.buttonText), for: .normal)
-        backgroundColor = UIColor(named: AppConstants.Colors.buttonActive)
+        backgroundColor = UIColor(named: AppConstants.Colors.buttonNext)
         layer.cornerRadius = AppConstants.Layout.buttonCornerRadius
         setTitle("descriptionButton.text".localized, for: .normal)
     }

@@ -22,6 +22,7 @@ protocol WorkoutViewModelProtocol: AnyObject {
     var onNext: ((WorkoutModel) -> Void)? { get set }
     var onFinish: (() -> Void)? { get set }
 
+    func setExerciseModelPhase(phase: CurrentPhase)
     func control()
     func next()
     func toDescription()
@@ -125,6 +126,10 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
         guard target != lastNotifiedPhase else { return }
         lastNotifiedPhase = target
         onPhaseChanged?(target)
+    }
+    
+    func setExerciseModelPhase(phase: CurrentPhase) {
+        exerciseModel.currentPhase = phase
     }
     
     func control() {

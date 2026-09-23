@@ -17,9 +17,9 @@ struct DataSource {
     }
     
     static func getDescription(named: String) -> String {
-        return ("workout.description." + named).localized + "\n" + ("workout.technique." + named).localized + "\n" + ("workout.warning." + named).localized + "\n" + ("workout.advise." + named).localized
+        return ("workout.description." + named).localized + "\n\n" + ("workout.technique." + named).localized + "\n\n" + ("workout.warning." + named).localized + "\n\n" + ("workout.advise." + named).localized
     }
-    
+
     static let exercises: [ExerciseRawModel] = [
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
                  positions: ExerciseScenesModel(

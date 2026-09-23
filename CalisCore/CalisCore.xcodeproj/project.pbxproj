@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
-		D06B254C3062C49800A00588 /* PBXContainerItemProxy */ = {
+		D06B25723063F8D000A00588 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D03A8989305975800068775C /* Project object */;
 			proxyType = 1;
@@ -18,7 +18,8 @@
 
 /* Begin PBXFileReference section */
 		D03A8991305975800068775C /* CalisCore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalisCore.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D06B25483062C49800A00588 /* CalisCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalisCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D06B25593063E91000A00588 /* CalisCore.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CalisCore.xctestplan; sourceTree = "<group>"; };
+		D06B256E3063F8D000A00588 /* CalisCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalisCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -40,7 +41,7 @@
 			path = CalisCore;
 			sourceTree = "<group>";
 		};
-		D06B25493062C49800A00588 /* CalisCoreTests */ = {
+		D06B256F3063F8D000A00588 /* CalisCoreTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = CalisCoreTests;
 			sourceTree = "<group>";
@@ -55,7 +56,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D06B25453062C49800A00588 /* Frameworks */ = {
+		D06B256B3063F8D000A00588 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -68,8 +69,9 @@
 		D03A8988305975800068775C = {
 			isa = PBXGroup;
 			children = (
+				D06B25593063E91000A00588 /* CalisCore.xctestplan */,
 				D03A8993305975800068775C /* CalisCore */,
-				D06B25493062C49800A00588 /* CalisCoreTests */,
+				D06B256F3063F8D000A00588 /* CalisCoreTests */,
 				D03A8992305975800068775C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -78,7 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				D03A8991305975800068775C /* CalisCore.app */,
-				D06B25483062C49800A00588 /* CalisCoreTests.xctest */,
+				D06B256E3063F8D000A00588 /* CalisCoreTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,27 +110,27 @@
 			productReference = D03A8991305975800068775C /* CalisCore.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D06B25473062C49800A00588 /* CalisCoreTests */ = {
+		D06B256D3063F8D000A00588 /* CalisCoreTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D06B254E3062C49800A00588 /* Build configuration list for PBXNativeTarget "CalisCoreTests" */;
+			buildConfigurationList = D06B25743063F8D000A00588 /* Build configuration list for PBXNativeTarget "CalisCoreTests" */;
 			buildPhases = (
-				D06B25443062C49800A00588 /* Sources */,
-				D06B25453062C49800A00588 /* Frameworks */,
-				D06B25463062C49800A00588 /* Resources */,
+				D06B256A3063F8D000A00588 /* Sources */,
+				D06B256B3063F8D000A00588 /* Frameworks */,
+				D06B256C3063F8D000A00588 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D06B254D3062C49800A00588 /* PBXTargetDependency */,
+				D06B25733063F8D000A00588 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				D06B25493062C49800A00588 /* CalisCoreTests */,
+				D06B256F3063F8D000A00588 /* CalisCoreTests */,
 			);
 			name = CalisCoreTests;
 			packageProductDependencies = (
 			);
 			productName = CalisCoreTests;
-			productReference = D06B25483062C49800A00588 /* CalisCoreTests.xctest */;
+			productReference = D06B256E3063F8D000A00588 /* CalisCoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -144,7 +146,7 @@
 					D03A8990305975800068775C = {
 						CreatedOnToolsVersion = 26.2;
 					};
-					D06B25473062C49800A00588 = {
+					D06B256D3063F8D000A00588 = {
 						CreatedOnToolsVersion = 26.2;
 						TestTargetID = D03A8990305975800068775C;
 					};
@@ -165,7 +167,7 @@
 			projectRoot = "";
 			targets = (
 				D03A8990305975800068775C /* CalisCore */,
-				D06B25473062C49800A00588 /* CalisCoreTests */,
+				D06B256D3063F8D000A00588 /* CalisCoreTests */,
 			);
 		};
 /* End PBXProject section */
@@ -178,7 +180,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D06B25463062C49800A00588 /* Resources */ = {
+		D06B256C3063F8D000A00588 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -195,7 +197,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D06B25443062C49800A00588 /* Sources */ = {
+		D06B256A3063F8D000A00588 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -205,10 +207,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D06B254D3062C49800A00588 /* PBXTargetDependency */ = {
+		D06B25733063F8D000A00588 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D03A8990305975800068775C /* CalisCore */;
-			targetProxy = D06B254C3062C49800A00588 /* PBXContainerItemProxy */;
+			targetProxy = D06B25723063F8D000A00588 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -410,7 +412,7 @@
 			};
 			name = Release;
 		};
-		D06B254F3062C49800A00588 /* Debug */ = {
+		D06B25753063F8D000A00588 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -431,7 +433,7 @@
 			};
 			name = Debug;
 		};
-		D06B25503062C49800A00588 /* Release */ = {
+		D06B25763063F8D000A00588 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -473,11 +475,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D06B254E3062C49800A00588 /* Build configuration list for PBXNativeTarget "CalisCoreTests" */ = {
+		D06B25743063F8D000A00588 /* Build configuration list for PBXNativeTarget "CalisCoreTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D06B254F3062C49800A00588 /* Debug */,
-				D06B25503062C49800A00588 /* Release */,
+				D06B25753063F8D000A00588 /* Debug */,
+				D06B25763063F8D000A00588 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

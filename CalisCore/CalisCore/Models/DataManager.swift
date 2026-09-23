@@ -1,5 +1,5 @@
 //
-//  WorkoutHelper.swift
+//  DataManager.swift
 //  CalisCore
 //
 //  Created by  Alexander Fedoseev on 15.09.2026.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class WorkoutHelper {
+final class DataManager {
     
     struct ExercisePlanModel {
         let setDuration: Int            // длительность одного подхода (сек)
@@ -71,14 +71,19 @@ final class WorkoutHelper {
     func getWorkoutExercises() -> [ExerciseModel] {
         let exs: [ExerciseRawModel] = DataSource.exercises
         guard exs.count >= userExercisesCount else {
+            #if DEBUG
             print("[ERROR] Недостаточно упражнений в базе: нужно \(userExercisesCount), есть \(exs.count)")
+            #endif
             return []
         }
+        
         let pickedExercises = Array(exs.shuffled().prefix(userExercisesCount))
         let plans = exercisePlans
         let expectedCount = pickedExercises.count * cyclesCount
         guard plans.count == expectedCount else {
+            #if DEBUG
             print("[ERROR] plans.count (\(plans.count)) != expected (\(expectedCount))")
+            #endif
             return []
         }
         var models: [ExerciseModel] = []

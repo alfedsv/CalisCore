@@ -20,7 +20,7 @@ final class WorkoutModel {
         self.workoutDuration = workoutDuration
         self.exercisesCount = exercisesCount
         self.workoutType = workoutType
-        let workoutHelper = WorkoutHelper(totalDuration: workoutDuration, userExercisesCount: exercisesCount, workoutType: workoutType)
+        let workoutHelper = DataManager(totalDuration: workoutDuration, userExercisesCount: exercisesCount, workoutType: workoutType)
         exerciseModels = workoutHelper.getWorkoutExercises()
     }
 }

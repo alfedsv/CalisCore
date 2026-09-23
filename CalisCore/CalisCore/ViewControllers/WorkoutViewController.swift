@@ -202,18 +202,18 @@ final class WorkoutViewController: UIViewController {
         let transitionScene = goingToWorkout ? scenes.idleToWorkoutScene : scenes.workoutToIdleScene
         // Нет переходного клипа — переключаемся мгновенно
         guard let transitionScene = transitionScene else {
-            model.currentPhase = target
+            viewModel.setExerciseModelPhase(phase: target)
             pendingTarget = nil
             playLoop(for: target)
             return
         }
-        model.currentPhase = .transition
+        viewModel.setExerciseModelPhase(phase: .transition)
         pendingTarget = target
         animationView.play(scene: transitionScene, loop: false) { [weak self] in
             guard let self = self else { return }
             let next = self.pendingTarget ?? target
             self.pendingTarget = nil
-            self.viewModel.exerciseModel.currentPhase = next
+            viewModel.setExerciseModelPhase(phase: next)
             self.playLoop(for: next)
         }
     }
@@ -344,11 +344,11 @@ private extension WorkoutViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
 
-            titleExerciseLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            titleExerciseLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             titleExerciseLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             titleExerciseLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
-            titleLabel.topAnchor.constraint(equalTo: titleExerciseLabel.bottomAnchor, constant: 25),
+            titleLabel.topAnchor.constraint(equalTo: titleExerciseLabel.bottomAnchor, constant: 20),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 25),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -25),
 
@@ -357,7 +357,7 @@ private extension WorkoutViewController {
             descriptionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             descriptionButton.heightAnchor.constraint(equalToConstant: AppConstants.Layout.buttonHeightSmoll),
 
-            setsCountLabel.topAnchor.constraint(equalTo: descriptionButton.bottomAnchor, constant: 20),
+            setsCountLabel.topAnchor.constraint(equalTo: descriptionButton.bottomAnchor, constant: 10),
             setsCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 25),
 
             setsCountNumberLabel.leadingAnchor.constraint(equalTo: setsCountLabel.trailingAnchor, constant: 5),

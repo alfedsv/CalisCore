@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "4D108B67-5BA6-40A1-A823-2062C6A6C293",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:CalisCore.xcodeproj",
+      "identifier" : "D03A8990305975800068775C",
+      "name" : "CalisCore"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:CalisCore.xcodeproj",
+        "identifier" : "D06B25473062C49800A00588",
+        "name" : "CalisCoreTests"
+      }
+    }
+  ],
+  "version" : 1
+}
