@@ -17,6 +17,11 @@ final class ExerciseAnimationView: UIView {
 
     // MARK: - Scene graph
 
+    private lazy var pivotNode: SCNNode = {
+        let node = SCNNode()
+        return node
+    }()
+    
     private lazy var cameraNode: SCNNode = {
         let node = SCNNode()
         node.camera = SCNCamera()
@@ -28,7 +33,8 @@ final class ExerciseAnimationView: UIView {
 
     private lazy var containerScene: SCNScene = {
         let scene = SCNScene()
-        scene.rootNode.addChildNode(cameraNode)
+        pivotNode.addChildNode(cameraNode)
+        scene.rootNode.addChildNode(pivotNode)
         return scene
     }()
 
@@ -39,6 +45,14 @@ final class ExerciseAnimationView: UIView {
     private var persistentScale: Float?
     private var hasSetUpCamera = false
     private var transitionToken = UUID()
+    
+    /// Текущая проигрываемая сцена — нужна для пересчёта камеры при вращении.
+    private var currentSceneModel: SceneModel?
+    /// Радиус и центр модели в мировых координатах (для пересчёта камеры).
+    private var currentScaledCenter: SCNVector3 = SCNVector3Zero
+    private var currentScaledRadius: Float = 0
+    /// Текущий дополнительный поворот камеры (радианы), задаваемый слайдером.
+    private var cameraAzimuthOffset: Float = 0
 
     // MARK: - Init
 
@@ -54,15 +68,13 @@ final class ExerciseAnimationView: UIView {
 
     private func setup() {
         backgroundColor = .clear
-
         sceneView.scene = containerScene
         sceneView.pointOfView = cameraNode
         sceneView.autoenablesDefaultLighting = true
-        sceneView.allowsCameraControl = true
+        sceneView.allowsCameraControl = false
         sceneView.backgroundColor = .clear
         sceneView.rendersContinuously = true
         sceneView.isPlaying = true
-
         addSubview(sceneView)
         sceneView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -80,16 +92,18 @@ final class ExerciseAnimationView: UIView {
     /// Кеш сцен при этом сохраняется.
     func reset() {
         transitionToken = UUID()
-
         currentModelRoot?.removeAllActions()
         currentModelRoot?.enumerateChildNodes { node, _ in
             node.removeAllActions()
         }
         currentModelRoot?.removeFromParentNode()
         currentModelRoot = nil
-
         persistentScale = nil
         hasSetUpCamera = false
+        currentSceneModel = nil
+        currentScaledCenter = SCNVector3Zero
+        currentScaledRadius = 0
+        cameraAzimuthOffset = 0
     }
 
     // MARK: - Preload
@@ -158,23 +172,16 @@ final class ExerciseAnimationView: UIView {
             }
         }
 
-        // Геометрия для камеры — в мировых координатах
+        // Геометрия модели — в мировых координатах
         let center = wrapper.boundingSphere.center
         let radius = wrapper.boundingSphere.radius
         let scaledCenter = SCNVector3(center.x * scale, center.y * scale, center.z * scale)
         let scaledRadius = radius * scale
 
-        let radiusOrbit: Float = scaledRadius * exerciseScene.radiusOrbitMul
-        let x = radiusOrbit * cos(exerciseScene.elevation) * sin(exerciseScene.azimuth)
-        let y = radiusOrbit * sin(exerciseScene.elevation)
-        let z = radiusOrbit * cos(exerciseScene.elevation) * cos(exerciseScene.azimuth)
-
-        let targetPosition = SCNVector3(scaledCenter.x + x, scaledCenter.y + y, scaledCenter.z + z)
-        let lookAtTarget = SCNVector3(
-            scaledCenter.x + scaledRadius * exerciseScene.scaledCenterMulX,
-            scaledCenter.y + scaledRadius * exerciseScene.scaledCenterMulY,
-            scaledCenter.z + scaledRadius * exerciseScene.scaledCenterMulZ
-        )
+        // Сохраняем данные сцены для пересчёта камеры при вращении слайдером
+        currentSceneModel = exerciseScene
+        currentScaledCenter = scaledCenter
+        currentScaledRadius = scaledRadius
 
         // Атомарная подмена старой модели на новую
         SCNTransaction.begin()
@@ -191,18 +198,13 @@ final class ExerciseAnimationView: UIView {
 
         SCNTransaction.commit()
 
-        // Камера: первый раз — мгновенно, дальше — плавно
+        // Камера: первый раз — мгновенно, дальше — плавно.
+        // Всю математику орбиты делает updateCameraPosition (pivot + camera внутри pivot).
         if !hasSetUpCamera {
             hasSetUpCamera = true
-            cameraNode.position = targetPosition
-            cameraNode.look(at: lookAtTarget)
+            updateCameraPosition(animated: false)
         } else {
-            SCNTransaction.begin()
-            SCNTransaction.animationDuration = 0.35
-            SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-            cameraNode.position = targetPosition
-            cameraNode.look(at: lookAtTarget)
-            SCNTransaction.commit()
+            updateCameraPosition(animated: true)
         }
 
         // Показываем узел — анимация уже применена
@@ -263,5 +265,64 @@ final class ExerciseAnimationView: UIView {
     /// Возобновляет рендер-луп.
     func resumeRendering() {
         sceneView.isPlaying = true
+    }
+    
+    // MARK: - Camera orbit
+
+    /// Устанавливает дополнительный поворот камеры вокруг вертикальной оси.
+    /// - Parameter azimuthOffset: смещение в радианах (например, от -π до +π).
+    func setCameraAzimuthOffset(_ azimuthOffset: Float) {
+        cameraAzimuthOffset = azimuthOffset
+        updateCameraPosition(animated: false)
+    }
+
+    /// Сбрасывает дополнительный поворот камеры.
+    func resetCameraAzimuthOffset() {
+        cameraAzimuthOffset = 0
+        updateCameraPosition(animated: false)
+    }
+
+    /// Пересчитывает позицию камеры с учётом текущего азимута.
+    private func updateCameraPosition(animated: Bool) {
+        guard let scene = currentSceneModel else { return }
+
+        let effectiveAzimuth = scene.azimuth + cameraAzimuthOffset
+
+        // Пивот ставим в точку, куда должна смотреть камера
+        let lookAtTarget = SCNVector3(
+            currentScaledCenter.x + currentScaledRadius * scene.scaledCenterMulX,
+            currentScaledCenter.y + currentScaledRadius * scene.scaledCenterMulY,
+            currentScaledCenter.z + currentScaledRadius * scene.scaledCenterMulZ
+        )
+        let radiusOrbit = currentScaledRadius * scene.radiusOrbitMul
+        let elevation = scene.elevation
+
+        let apply: () -> Void = { [weak self] in
+            guard let self = self else { return }
+
+            // Пивот — в цель, вращаем вокруг Y
+            self.pivotNode.position = lookAtTarget
+            self.pivotNode.eulerAngles = SCNVector3(0, effectiveAzimuth, 0)
+
+            // Камера внутри пивота: отходим назад и вверх по локальным осям
+            let localX: Float = 0
+            let localY: Float = radiusOrbit * sin(elevation)
+            let localZ: Float = radiusOrbit * cos(elevation)
+            self.cameraNode.position = SCNVector3(localX, localY, localZ)
+
+            // Смотрим ровно в начало пивота — без крена, без look(at:) на мировые точки
+            self.cameraNode.eulerAngles = SCNVector3(-elevation, 0, 0)
+        }
+
+        SCNTransaction.begin()
+        if animated {
+            SCNTransaction.animationDuration = 0.15
+            SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        } else {
+            SCNTransaction.animationDuration = 0
+            SCNTransaction.disableActions = true
+        }
+        apply()
+        SCNTransaction.commit()
     }
 }

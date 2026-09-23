@@ -22,6 +22,7 @@ final class WorkoutViewController: UIViewController {
     private let contentView = UIView()
     private let titleExerciseLabel = MainTitleLabel()
     private let animationView = ExerciseAnimationView()
+    private let cameraSlider = UISlider()
     private let titleLabel = TitleLabel()
     private let descriptionButton = DescriptionButton()
     private let setsCountLabel = DescriptionExerciseLabel()
@@ -138,6 +139,14 @@ final class WorkoutViewController: UIViewController {
         // TODO: убрать border после отладки камеры
         animationView.layer.borderWidth = 1
         animationView.layer.borderColor = UIColor.black.cgColor
+        
+        cameraSlider.minimumValue = -Float.pi
+        cameraSlider.maximumValue = Float.pi
+        cameraSlider.value = 0
+        cameraSlider.minimumTrackTintColor = UIColor(named: AppConstants.Colors.progressBarSet)
+        cameraSlider.maximumTrackTintColor = UIColor(named: AppConstants.Colors.progressBarSet)
+        cameraSlider.addTarget(self, action: #selector(cameraSliderChanged(_:)), for: .valueChanged)
+        contentView.addSubview(cameraSlider)
         
         let scenes = viewModel.exerciseModel.exerciseScenes
         var toPreload: [SceneModel] = [scenes.idle, scenes.workoutScene]
@@ -306,6 +315,11 @@ final class WorkoutViewController: UIViewController {
     private func descriptionButtonTapped() {
         viewModel.toDescription()
     }
+
+    @objc
+    private func cameraSliderChanged(_ sender: UISlider) {
+        animationView.setCameraAzimuthOffset(sender.value)
+    }
 }
 
 // MARK: - Layout
@@ -317,6 +331,7 @@ private extension WorkoutViewController {
             contentView,
             titleExerciseLabel,
             animationView,
+            cameraSlider,
             titleLabel,
             descriptionButton,
             setsCountLabel,
@@ -382,8 +397,12 @@ private extension WorkoutViewController {
             animationView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: AppConstants.Layout.animationViewPadding),
             animationView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -AppConstants.Layout.animationViewPadding),
             animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor),
+            
+            cameraSlider.topAnchor.constraint(equalTo: animationView.bottomAnchor, constant: 12),
+            cameraSlider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
+            cameraSlider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
 
-            controlButton.topAnchor.constraint(equalTo: animationView.bottomAnchor, constant: 20),
+            controlButton.topAnchor.constraint(equalTo: cameraSlider.bottomAnchor, constant: 16),
             controlButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             controlButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             controlButton.heightAnchor.constraint(equalToConstant: AppConstants.Layout.buttonHeightSmoll),
