@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct ExerciseModel {
+final class ExerciseModel {
 
     let id: UUID
     let index: Int
