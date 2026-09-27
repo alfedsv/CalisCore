@@ -22,9 +22,10 @@ final class ExerciseModel {
     let setsCount: Int          // количество подходов
     let exerciseDuration: Int   // время выполнения всего уражнения
     var progress: Int = 0
+    let isLastExercise: Bool
     let steps: [ExerciseStep]
 
-    init(id: UUID, index: Int, title: String, description: String, exerciseScenes: ExerciseScenesModel, setDuration: Int, recoveryDuration: Int, setsCount: Int, restBetweenCycles: Int) {
+    init(id: UUID, index: Int, title: String, description: String, exerciseScenes: ExerciseScenesModel, setDuration: Int, recoveryDuration: Int, setsCount: Int, restBetweenCycles: Int, isLastExercise: Bool) {
         self.id = id
         self.index = index
         self.title = title
@@ -34,11 +35,17 @@ final class ExerciseModel {
         self.recoveryDuration = recoveryDuration
         self.setsCount = setsCount
         var steps: [ExerciseStep] = []
-        for _ in 0..<setsCount {
+        self.isLastExercise = isLastExercise
+        for setIndex in 0..<setsCount {
             steps.append(ExerciseStep(kind: .setDuration, duration: setDuration))
-            steps.append(ExerciseStep(kind: .restDuration, duration: recoveryDuration))
+            let isLastSet = (setIndex == setsCount - 1)
+            // Не добавляем отдых после самого последнего подхода, самого последнего упражнения
+            if !(isLastSet && isLastExercise) {
+                steps.append(ExerciseStep(kind: .restDuration, duration: recoveryDuration))
+            }
         }
-        if restBetweenCycles > 0 {
+        // Не добавляем межцикловый отдых после самого последнего подхода, самого последнего упражнения
+        if restBetweenCycles > 0 && !isLastExercise {
             steps.append(ExerciseStep(kind: .circuitRestDuration, duration: restBetweenCycles))
         }
         self.steps = steps

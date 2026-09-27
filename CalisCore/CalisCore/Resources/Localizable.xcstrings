@@ -494,6 +494,23 @@
         }
       }
     },
+    "largeButton.end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish workout"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закончить тренировку"
+          }
+        }
+      }
+    },
     "largeButton.next" : {
       "extractionState" : "manual",
       "localizations" : {

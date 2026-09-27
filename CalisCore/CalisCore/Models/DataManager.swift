@@ -90,6 +90,7 @@ final class DataManager {
         models.reserveCapacity(plans.count)
         for (index, plan) in plans.enumerated() {
             let exercise = pickedExercises[index % pickedExercises.count]
+            let isLastExercise = (index == plans.count - 1)
             let model = ExerciseModel(
                 id: exercise.id,
                 index: index,
@@ -99,7 +100,8 @@ final class DataManager {
                 setDuration: plan.setDuration,
                 recoveryDuration: plan.recoveryDuration,
                 setsCount: plan.setsCount,
-                restBetweenCycles: plan.restBetweenCycles
+                restBetweenCycles: plan.restBetweenCycles,
+                isLastExercise: isLastExercise
             )
             models.append(model)
         }

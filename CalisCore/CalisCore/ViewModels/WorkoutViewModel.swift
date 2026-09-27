@@ -11,6 +11,7 @@ protocol WorkoutViewModelProtocol: AnyObject {
     
     var exerciseNumber: Int { get }
     var exercisesCount: Int { get }
+    var isLastExercise: Bool { get }
     var exerciseModel: ExerciseModel { get }
 
     var onUpdate: (() -> Void)? { get set }
@@ -35,6 +36,7 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
 
     var exerciseNumber: Int
     var exercisesCount: Int
+    var isLastExercise: Bool
     var exerciseModel: ExerciseModel
 
     // MARK: - Callbacks
@@ -74,6 +76,7 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
         self.exerciseModel = workoutModel.exerciseModels[workoutModel.currentExerciseIndex]
         self.exerciseNumber = workoutModel.currentExerciseIndex + 1
         self.exercisesCount = workoutModel.exerciseModels.count
+        self.isLastExercise = self.exerciseModel.isLastExercise
     }
     
     deinit {

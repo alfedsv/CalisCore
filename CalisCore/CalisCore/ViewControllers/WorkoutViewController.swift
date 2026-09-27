@@ -39,7 +39,7 @@ final class WorkoutViewController: UIViewController {
         stackView.alignment = .fill
         return stackView
     }()
-    private let nextButton = LargeButton(title: "largeButton.next".localized, isActive: true)
+    private let nextButton: LargeButton
 
     // MARK: - State
 
@@ -50,6 +50,8 @@ final class WorkoutViewController: UIViewController {
 
     init(workoutModel: WorkoutModel) {
         self.viewModel = WorkoutViewModel(workoutModel: workoutModel)
+        let buttonTitle = viewModel.isLastExercise ? "largeButton.end".localized : "largeButton.next".localized
+        self.nextButton = LargeButton(title: buttonTitle, isActive: true)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -135,11 +137,6 @@ final class WorkoutViewController: UIViewController {
         titleExerciseLabel.text = "exercise.title".localized + " " + String(viewModel.exerciseNumber) + " / " + String(viewModel.exercisesCount)
         contentView.addSubview(titleExerciseLabel)
         contentView.addSubview(animationView)
-
-        // TODO: убрать border после отладки камеры
-        animationView.layer.borderWidth = 1
-        animationView.layer.borderColor = UIColor.black.cgColor
-        
         cameraSlider.minimumValue = -Float.pi
         cameraSlider.maximumValue = Float.pi
         cameraSlider.value = 0
@@ -411,7 +408,7 @@ private extension WorkoutViewController {
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
 
-            nextButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 65),
+            nextButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 45),
             nextButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: AppConstants.Layout.paddingLargeButton),
             nextButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -AppConstants.Layout.paddingLargeButton),
             nextButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -AppConstants.Layout.paddingLargeButtonBottom),
