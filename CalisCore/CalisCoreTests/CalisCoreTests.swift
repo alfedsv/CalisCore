@@ -2,7 +2,7 @@
 //  CalisCoreTests.swift
 //  CalisCoreTests
 //
-//  Created by  Alexander Fedoseev on 23.09.2026.
+//  Created by  Alexander Fedoseev on 23.09.2026.
 //
 
 import XCTest
@@ -74,17 +74,35 @@ final class CalisCoreTests: XCTestCase {
                         let cycles = models.count / count
                         XCTAssertTrue((1...7).contains(cycles), "cycles=\(cycles) вне [1,7]")
                     }
-                    for model in models {
-                        assertCommonInvariants(model, type: type, duration: duration, count: count)
+                    for (idx, model) in models.enumerated() {
+                        let isLastExercise = (idx == models.count - 1)
+                        assertCommonInvariants(
+                            model,
+                            type: type,
+                            duration: duration,
+                            count: count,
+                            isLastExercise: isLastExercise
+                        )
                     }
                 }
             }
         }
     }
 
-    /// Общие инварианты для одного упражнения
-    private func assertCommonInvariants(_ model: ExerciseModel, type: WorkoutType, duration: Int, count: Int, file: StaticString = #file, line: UInt = #line) {
-        let ctx = "type=\(type), dur=\(duration), count=\(count), exIdx=\(model.index)"
+    /// Общие инварианты для одного упражнения.
+    ///
+    /// - Parameter isLastExercise: если `true`, у упражнения нет финального отдыха
+    ///   (последний подход последнего упражнения тренировки не сопровождается отдыхом).
+    private func assertCommonInvariants(
+        _ model: ExerciseModel,
+        type: WorkoutType,
+        duration: Int,
+        count: Int,
+        isLastExercise: Bool,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        let ctx = "type=\(type), dur=\(duration), count=\(count), exIdx=\(model.index), isLast=\(isLastExercise)"
 
         // setDuration: положительный и кратен 5
         XCTAssertGreaterThan(model.setDuration, 0, "setDuration <= 0 — \(ctx)", file: file, line: line)
@@ -93,12 +111,17 @@ final class CalisCoreTests: XCTestCase {
         // setsCount >= 1
         XCTAssertGreaterThanOrEqual(model.setsCount, 1, "setsCount=\(model.setsCount) < 1 — \(ctx)", file: file, line: line)
 
-        // steps: ровно setsCount пар (set+rest) [+ опциональный circuitRest]
+        // steps: setsCount шагов setDuration, и либо setsCount шагов restDuration,
+        // либо (setsCount - 1) у самого последнего упражнения тренировки
         let setSteps = model.steps.filter { $0.kind == .setDuration }
         let restSteps = model.steps.filter { $0.kind == .restDuration }
         let circuitSteps = model.steps.filter { $0.kind == .circuitRestDuration }
+
         XCTAssertEqual(setSteps.count, model.setsCount, "setSteps != setsCount — \(ctx)", file: file, line: line)
-        XCTAssertEqual(restSteps.count, model.setsCount, "restSteps != setsCount — \(ctx)", file: file, line: line)
+
+        let expectedRestCount = isLastExercise ? model.setsCount - 1 : model.setsCount
+        XCTAssertEqual(restSteps.count, expectedRestCount, "restSteps=\(restSteps.count), ожидалось \(expectedRestCount) — \(ctx)", file: file, line: line)
+
         XCTAssertLessThanOrEqual(circuitSteps.count, 1, "circuitRest шагов > 1 — \(ctx)", file: file, line: line)
 
         // exerciseDuration = сумма шагов
