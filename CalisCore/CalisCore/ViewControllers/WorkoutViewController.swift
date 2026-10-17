@@ -14,6 +14,11 @@ final class WorkoutViewController: UIViewController {
 
     // MARK: - Dependencies
 
+    /// Общая модель тренировки. Хранится, чтобы при переходах переиспользовать
+    /// уже сгенерированные упражнения (без повторного `DataManager`).
+    private let workoutModel: WorkoutModel
+
+    /// ViewModel текущего упражнения. Пересоздаётся вместе с контроллером.
     private let viewModel: WorkoutViewModelProtocol
 
     // MARK: - UI Elements
@@ -21,7 +26,7 @@ final class WorkoutViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     private let titleExerciseLabel = MainTitleLabel()
-    private let animationView = ExerciseAnimationView()
+    private let animationView = RealityExerciseAnimationView()
     private let cameraSlider = UISlider()
     private let titleLabel = TitleLabel()
     private let descriptionButton = DescriptionButton()
@@ -44,44 +49,76 @@ final class WorkoutViewController: UIViewController {
     // MARK: - State
 
     private var progressViews: [UIProgressView] = []
+
+    /// Фаза, к которой нужно перейти после завершения текущего transition-клипа.
     private var pendingTarget: CurrentPhase?
 
     // MARK: - Init
 
     init(workoutModel: WorkoutModel) {
+        self.workoutModel = workoutModel
+
+        let index = workoutModel.currentExerciseIndex
+        if index >= 0, index < workoutModel.exerciseModels.count {
+            let model = workoutModel.exerciseModels[index]
+            if model.currentState != .running && model.currentPhase != .idle {
+                model.currentPhase = .idle
+            }
+        }
+
         self.viewModel = WorkoutViewModel(workoutModel: workoutModel)
-        let buttonTitle = viewModel.isLastExercise ? "largeButton.end".localized : "largeButton.next".localized
+        let buttonTitle = viewModel.isLastExercise
+            ? "largeButton.end".localized
+            : "largeButton.next".localized
         self.nextButton = LargeButton(title: buttonTitle, isActive: true)
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         setupUI()
         bindViewModel()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Пока открыт этот экран, edge-swipe должен быть отключён, чтобы
+        // пользователь случайно не «выпрыгнул» на Setup вместо предыдущего
+        // упражнения.
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         animationView.resumeRendering()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if isMovingFromParent {
-            viewModel.back()
-        }
+        // Восстанавливаем edge-swipe для других экранов (например, Setup → ...).
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        // Никакого viewModel.back() — навигацией управляем через replaceSelf/back.
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         animationView.pauseRendering()
+    }
+
+    // MARK: - Navigation bar
+
+    private func setupNavigationBar() {
+        navigationItem.hidesBackButton = true
+        let backImage = UIImage(systemName: "chevron.left")
+        let backItem = UIBarButtonItem(
+            image: backImage,
+            style: .plain,
+            target: self,
+            action: #selector(backTapped)
+        )
+        backItem.accessibilityLabel = "back".localized
+        navigationItem.leftBarButtonItem = backItem
     }
 
     // MARK: - Binding
@@ -117,14 +154,14 @@ final class WorkoutViewController: UIViewController {
             self?.present(vc, animated: true)
         }
 
+        // Навигация «вперёд» — не пуш, а замена себя.
         viewModel.onNext = { [weak self] workoutModel in
-            let viewController = WorkoutViewController(workoutModel: workoutModel)
-            self?.navigationController?.pushViewController(viewController, animated: true)
+            self?.replaceSelf(with: workoutModel)
         }
 
         viewModel.onFinish = { [weak self] in
-            let viewController = FinishViewController()
-            self?.navigationController?.pushViewController(viewController, animated: true)
+            let vc = FinishViewController()
+            self?.navigationController?.pushViewController(vc, animated: true)
         }
     }
 
@@ -134,9 +171,12 @@ final class WorkoutViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        titleExerciseLabel.text = "exercise.title".localized + " " + String(viewModel.exerciseNumber) + " / " + String(viewModel.exercisesCount)
+        titleExerciseLabel.text = "exercise.title".localized + " "
+            + String(viewModel.exerciseNumber) + " / "
+            + String(viewModel.exercisesCount)
         contentView.addSubview(titleExerciseLabel)
         contentView.addSubview(animationView)
+
         cameraSlider.minimumValue = -Float.pi
         cameraSlider.maximumValue = Float.pi
         cameraSlider.value = 0
@@ -144,14 +184,21 @@ final class WorkoutViewController: UIViewController {
         cameraSlider.maximumTrackTintColor = UIColor(named: AppConstants.Colors.progressBarSet)
         cameraSlider.addTarget(self, action: #selector(cameraSliderChanged(_:)), for: .valueChanged)
         contentView.addSubview(cameraSlider)
-        
+
         let scenes = viewModel.exerciseModel.exerciseScenes
         var toPreload: [SceneModel] = [scenes.idle, scenes.workoutScene]
         if let s = scenes.idleToWorkoutScene { toPreload.append(s) }
         if let s = scenes.workoutToIdleScene { toPreload.append(s) }
 
         animationView.preload(scenes: toPreload) { [weak self] in
-            self?.playLoop(for: .idle)
+            guard let self = self else { return }
+            // Восстанавливаем анимацию по сохранённой фазе:
+            // - .workout  — крутим workout loop (пользователь был в подходе);
+            // - .idle     — крутим idle loop;
+            // - .transition — на всякий случай: не оставляем залипание, начинаем с idle.
+            let phase = self.viewModel.exerciseModel.currentPhase
+            let initialPhase: CurrentPhase = (phase == .workout) ? .workout : .idle
+            self.playLoop(for: initialPhase)
         }
 
         contentView.addSubview(titleLabel)
@@ -194,32 +241,40 @@ final class WorkoutViewController: UIViewController {
     private func handleTargetPhase(_ target: CurrentPhase) {
         let model = viewModel.exerciseModel
         if model.currentPhase == target { return }
+
         if model.currentPhase == .transition {
             pendingTarget = target
             return
         }
+
         startTransition(to: target)
     }
-    
+
     private func startTransition(to target: CurrentPhase) {
         let model = viewModel.exerciseModel
         let scenes = model.exerciseScenes
+
         let goingToWorkout = (model.currentPhase == .idle)
-        let transitionScene = goingToWorkout ? scenes.idleToWorkoutScene : scenes.workoutToIdleScene
-        // Нет переходного клипа — переключаемся мгновенно
+        let transitionScene = goingToWorkout
+            ? scenes.idleToWorkoutScene
+            : scenes.workoutToIdleScene
+
+        // Нет transition-клипа — переключаемся мгновенно.
         guard let transitionScene = transitionScene else {
             viewModel.setExerciseModelPhase(phase: target)
             pendingTarget = nil
             playLoop(for: target)
             return
         }
+
         viewModel.setExerciseModelPhase(phase: .transition)
         pendingTarget = target
+
         animationView.play(scene: transitionScene, loop: false) { [weak self] in
             guard let self = self else { return }
             let next = self.pendingTarget ?? target
             self.pendingTarget = nil
-            viewModel.setExerciseModelPhase(phase: next)
+            self.viewModel.setExerciseModelPhase(phase: next)
             self.playLoop(for: next)
         }
     }
@@ -227,8 +282,40 @@ final class WorkoutViewController: UIViewController {
     private func playLoop(for phase: CurrentPhase) {
         let scenes = viewModel.exerciseModel.exerciseScenes
         let scene = (phase == .workout) ? scenes.workoutScene : scenes.idle
-        let alternating = (phase == .workout) && scenes.isWorkoutReversed
-        animationView.play(scene: scene, alternating: alternating, loop: true)
+        animationView.play(scene: scene, loop: true)
+    }
+
+    // MARK: - Navigation helpers
+
+    /// Заменяет текущий контроллер в стеке новым экземпляром с тем же `WorkoutModel`.
+    /// Старый экземпляр деаллоцируется, освобождая свой `ARView`.
+    private func replaceSelf(with workoutModel: WorkoutModel) {
+        guard let nav = navigationController else { return }
+        var stack = nav.viewControllers
+        guard let idx = stack.firstIndex(where: { $0 === self }) else { return }
+
+        // Останавливаем таймер и освобождаем модель перед заменой.
+        // (Старый viewModel деаллоцируется вместе с VC.)
+        let newVC = WorkoutViewController(workoutModel: workoutModel)
+        stack[idx] = newVC
+
+        UIView.transition(with: nav.view,
+                          duration: 0.25,
+                          options: .transitionCrossDissolve) {
+            nav.setViewControllers(stack, animated: false)
+        }
+    }
+
+    @objc
+    private func backTapped() {
+        // Если это первое упражнение — обычный pop на Setup.
+        // Иначе — заменяем себя на предыдущее упражнение.
+        if workoutModel.currentExerciseIndex > 0 {
+            workoutModel.currentExerciseIndex -= 1
+            replaceSelf(with: workoutModel)
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
     }
 
     // MARK: - Progress helpers
@@ -305,9 +392,11 @@ final class WorkoutViewController: UIViewController {
 
     @objc
     private func nextButtonTapped() {
+        // `viewModel.next()` увеличит currentExerciseIndex и вызовет onNext.
+        // В onNext мы заменим себя новым экземпляром — с уже обновлённым индексом.
         viewModel.next()
     }
-    
+
     @objc
     private func descriptionButtonTapped() {
         viewModel.toDescription()
@@ -394,7 +483,7 @@ private extension WorkoutViewController {
             animationView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: AppConstants.Layout.animationViewPadding),
             animationView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -AppConstants.Layout.animationViewPadding),
             animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor),
-            
+
             cameraSlider.topAnchor.constraint(equalTo: animationView.bottomAnchor, constant: 12),
             cameraSlider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             cameraSlider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),

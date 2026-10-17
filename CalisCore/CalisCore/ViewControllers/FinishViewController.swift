@@ -18,7 +18,8 @@ final class FinishViewController: UIViewController {
     // MARK: - UI Elements
 
     private let titleLabel = MainTitleLabel(text: "finish.title".localized)
-    private let animationView = ExerciseAnimationView()
+    //private let animationView = ExerciseAnimationView()
+    private let animationView = RealityExerciseAnimationView()
     private let winLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 20)

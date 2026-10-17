@@ -21,7 +21,7 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:CalisCore.xcodeproj",
-        "identifier" : "D06B25473062C49800A00588",
+        "identifier" : "D06B256D3063F8D000A00588",
         "name" : "CalisCoreTests"
       }
     }

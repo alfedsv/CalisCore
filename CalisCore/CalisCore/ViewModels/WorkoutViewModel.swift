@@ -27,7 +27,6 @@ protocol WorkoutViewModelProtocol: AnyObject {
     func control()
     func next()
     func toDescription()
-    func back()
 }
 
 final class WorkoutViewModel: WorkoutViewModelProtocol {
@@ -49,9 +48,9 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
     var onToDescription: ((String, String) -> Void)?
     var onNext: ((WorkoutModel) -> Void)?
     var onFinish: (() -> Void)?
-    
+
     // MARK: - Private
-    
+
     private var exerciseIndex: Int {
         return workoutModel.currentExerciseIndex
     }
@@ -78,7 +77,7 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
         self.exercisesCount = workoutModel.exerciseModels.count
         self.isLastExercise = self.exerciseModel.isLastExercise
     }
-    
+
     deinit {
         switch exerciseModel.currentState {
         case .running:
@@ -92,7 +91,7 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
     }
 
     // MARK: - Timer
-    
+
     private func startTimer() {
         self.onUpdate?()
         self.updatePhase()
@@ -110,17 +109,17 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
             }
             self.exerciseModel.progress = Int(Double(self.exerciseModel.progress) + 1.0)
             self.onUpdate?()
-            self.updatePhase() 
+            self.updatePhase()
         }
     }
-    
+
     private func stopTimer() {
         timer?.invalidate()
         timer = nil
     }
 
     // MARK: - Phase
-    
+
     private func updatePhase() {
         let target: CurrentPhase = {
             guard exerciseModel.currentState == .running, let step = currentStep else { return .idle }
@@ -130,11 +129,11 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
         lastNotifiedPhase = target
         onPhaseChanged?(target)
     }
-    
+
     func setExerciseModelPhase(phase: CurrentPhase) {
         exerciseModel.currentPhase = phase
     }
-    
+
     func control() {
         switch exerciseModel.currentState {
         case .running:
@@ -162,16 +161,9 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
             onFinish?()
         }
     }
-    
+
     func toDescription() {
         onToDescription?(exerciseModel.title, exerciseModel.description)
-    }
-
-    func back() {
-        navigation()
-        if exerciseIndex > 0 {
-            workoutModel.currentExerciseIndex = exerciseIndex - 1
-        }
     }
 
     private func navigation() {
@@ -183,4 +175,3 @@ final class WorkoutViewModel: WorkoutViewModelProtocol {
         }
     }
 }
-
