@@ -1,6 +1,23 @@
 {
   "sourceLanguage" : "ru",
   "strings" : {
+    "carousel.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couch"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тренер"
+          }
+        }
+      }
+    },
     "consent.checkbox" : {
       "extractionState" : "manual",
       "localizations" : {

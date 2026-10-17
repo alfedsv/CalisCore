@@ -11,15 +11,14 @@ import RealityKit
 
 /// RealityKit-версия вью для анимации упражнения.
 /// - Поддерживает циклические (`loop: true`) и одноразовые (`loop: false`) сцены.
-/// - Играет **только первую** анимацию из `availableAnimations`.
-///   Mixamo/Blender иногда кладут в USDZ несколько клипов (rest-pose + основной).
-///   Если запустить все сразу, второй контроллер «перебивает» первый, и `isComplete`
-///   у первого мгновенно становится `true`, хотя визуально играет второй.
-/// - Для одноразовых сцен `completion` вызывается после фактического завершения
-///   клипа (через polling `isComplete`).
-/// - Запуск анимации откладывается на первый кадр (`CADisplayLink`), чтобы
-///   сцена точно успела стать активной.
-/// - Поддерживает подмену тела на лету (см. `swapBody`).
+/// - Для **loop** сцен играем только **один** клип (последний из
+///   `availableAnimations`). Mixamo/Blender экспортирует `[rest_pose, real_action]`;
+///   одновременное воспроизведение двух клипов удваивает skinning-нагрузку и
+///   приводит к тормозам, при этом визуально виден только «живой» (второй).
+/// - Для **transition** сцен (loop: false) играем все клипы — completion ждёт
+///   завершения каждого. Переходы короткие, двойная нагрузка незаметна.
+/// - Запуск анимации откладывается на первый кадр (`CADisplayLink`).
+/// - Поддерживает подмену тела (`swapBody`).
 final class RealityExerciseAnimationView: UIView {
 
     // MARK: - UI
@@ -53,22 +52,20 @@ final class RealityExerciseAnimationView: UIView {
     private var cameraAzimuthOffset: Float = 0
     private var transitionToken = UUID()
     private var playbackControllers: [AnimationPlaybackController] = []
+    private var isRenderingPaused = false
 
-    /// Активная (запущенная) анимация текущей сцены.
-    /// Сохраняется, чтобы при `swapBody` применить её к новому телу.
-    private var currentAnimation: AnimationResource?
+    /// Активные анимации текущей сцены (для `swapBody`).
+    private var currentAnimations: [AnimationResource] = []
     private var currentLoop: Bool = true
 
     // MARK: - Completion polling
 
     private var completionTimer: Timer?
     private var completionHandler: (() -> Void)?
-    private var completionController: AnimationPlaybackController?
     private var completionToken: UUID?
 
     // MARK: - First-frame scheduling
 
-    /// Запуск анимации откладывается на первый кадр рендеринга.
     private var firstFrameLink: CADisplayLink?
     private var pendingAnimationSetup: (() -> Void)?
 
@@ -100,7 +97,6 @@ final class RealityExerciseAnimationView: UIView {
             arView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
 
-        // Камера
         let camera = PerspectiveCamera()
         camera.camera.fieldOfViewInDegrees = 45
         camera.camera.near = 0.01
@@ -108,7 +104,6 @@ final class RealityExerciseAnimationView: UIView {
         cameraEntity.addChild(camera)
         pivotEntity.addChild(cameraEntity)
 
-        // Свет — три источника
         let key = DirectionalLight()
         key.light.intensity = 4000
         key.light.color = .white
@@ -140,7 +135,7 @@ final class RealityExerciseAnimationView: UIView {
         stopAllAnimations()
         currentModelEntity?.removeFromParent()
         currentModelEntity = nil
-        currentAnimation = nil
+        currentAnimations = []
         persistentScale = nil
         hasSetUpCamera = false
         currentSceneModel = nil
@@ -183,7 +178,6 @@ final class RealityExerciseAnimationView: UIView {
                          loop: Bool,
                          completion: (() -> Void)?,
                          token: UUID) {
-        // ---- Масштаб ----
         let rawBounds = entity.visualBounds(relativeTo: nil)
         let rawHeight = rawBounds.extents.y
         let scale: Float
@@ -196,14 +190,12 @@ final class RealityExerciseAnimationView: UIView {
         }
         entity.scale = SIMD3<Float>(repeating: scale)
 
-        // ---- Подмена модели ----
         cancelPendingFirstFrame()
         stopAllAnimations()
         currentModelEntity?.removeFromParent()
         rootAnchor.addChild(entity)
         currentModelEntity = entity
 
-        // ---- Данные для камеры ----
         currentSceneModel = scene
         currentBounds = entity.visualBounds(relativeTo: nil)
 
@@ -214,7 +206,6 @@ final class RealityExerciseAnimationView: UIView {
             updateCameraPosition(animated: true)
         }
 
-        // ---- Запуск анимации после первого кадра ----
         scheduleAnimationSetup(entity: entity,
                                loop: loop,
                                completion: completion,
@@ -231,10 +222,10 @@ final class RealityExerciseAnimationView: UIView {
 
         pendingAnimationSetup = { [weak self] in
             guard let self = self, self.transitionToken == token else { return }
-            self.startAnimation(entity: entity,
-                                loop: loop,
-                                completion: completion,
-                                token: token)
+            self.startAnimations(entity: entity,
+                                 loop: loop,
+                                 completion: completion,
+                                 token: token)
         }
 
         let link = CADisplayLink(target: self, selector: #selector(handleFirstFrame))
@@ -244,7 +235,6 @@ final class RealityExerciseAnimationView: UIView {
 
     @objc
     private func handleFirstFrame() {
-        // Важно: забираем setup ДО очистки, иначе он обнулится.
         let setup = pendingAnimationSetup
 
         firstFrameLink?.invalidate()
@@ -262,33 +252,31 @@ final class RealityExerciseAnimationView: UIView {
 
     // MARK: - Animation start
 
-    /// Запускает **только первую** анимацию из `availableAnimations`.
-    ///
-    /// Почему не все:
-    /// Mixamo/Blender иногда кладут в один USDZ несколько клипов
-    /// (например, rest-pose + основной). При `playAnimation` на нескольких
-    /// ресурсах второй контроллер «перебивает» первый, и у первого
-    /// `isComplete` мгновенно становится `true`, хотя визуально играет второй.
-    /// В результате polling завершения срабатывает по «пустышке».
-    private func startAnimation(entity: Entity,
-                                loop: Bool,
-                                completion: (() -> Void)?,
-                                token: UUID) {
+    /// Запускает анимации с учётом режима:
+    /// - `loop: true` — только **одна** (последняя). Mixamo/Blender кладёт
+    ///   `[rest_pose, real_action]`; одновременное воспроизведение удваивает
+    ///   skinning-нагрузку и даёт заметные тормоза. Визуально «живой» — последний.
+    /// - `loop: false` — все клипы. Completion ждёт завершения каждого.
+    ///   Переходы короткие, двойная нагрузка в течение 1–2 секунд не заметна.
+    private func startAnimations(entity: Entity,
+                                 loop: Bool,
+                                 completion: (() -> Void)?,
+                                 token: UUID) {
         guard transitionToken == token else { return }
 
         let animations = entity.availableAnimations
 
         #if DEBUG
-        print("▶️ startAnimation: scene=\(currentSceneModel?.name ?? "?"), " +
-              "loop=\(loop), availableAnimations.count=\(animations.count)")
+        let names = animations.map { $0.name ?? "?" }.joined(separator: ", ")
+        print("▶️ startAnimations: scene=\(currentSceneModel?.name ?? "?"), " +
+              "loop=\(loop), availableAnimations=\(animations.count) [\(names)]")
         #endif
 
-        guard let firstAnimation = animations.first else {
-            // Нет анимации — статичная поза. Завершаем сразу.
+        guard !animations.isEmpty else {
             #if DEBUG
             print("ℹ️ \(currentSceneModel?.name ?? "?") без анимации — статичная поза")
             #endif
-            currentAnimation = nil
+            currentAnimations = []
             currentLoop = loop
             DispatchQueue.main.async { [weak self] in
                 guard let self = self, self.transitionToken == token else { return }
@@ -297,20 +285,37 @@ final class RealityExerciseAnimationView: UIView {
             return
         }
 
-        currentAnimation = firstAnimation
+        // Выбираем набор клипов в зависимости от режима.
+        let toPlay: [AnimationResource]
+        if loop {
+            // Loop: только последний (реальная анимация).
+            toPlay = [animations.last!]
+        } else {
+            // Transition: все клипы — completion ждёт самый длинный.
+            toPlay = animations
+        }
+
+        currentAnimations = toPlay
         currentLoop = loop
 
-        let resource = loop ? firstAnimation.repeat() : firstAnimation
-        let controller = entity.playAnimation(resource,
-                                              transitionDuration: 0,
-                                              startsPaused: false)
-        playbackControllers.append(controller)
+        for animation in toPlay {
+            let resource = loop ? animation.repeat() : animation
+            let controller = entity.playAnimation(resource,
+                                                  transitionDuration: 0,
+                                                  startsPaused: false)
+            if isRenderingPaused {
+                controller.pause()
+            }
+            playbackControllers.append(controller)
+        }
 
-        // ---- Completion ----
+        #if DEBUG
+        print("▶️ playing \(playbackControllers.count) controller(s)")
+        #endif
+
         guard let completion = completion else { return }
 
         if loop {
-            // Для циклической сцены — завершение сразу (никто не ждёт конца).
             DispatchQueue.main.async { [weak self] in
                 guard let self = self, self.transitionToken == token else { return }
                 completion()
@@ -318,36 +323,24 @@ final class RealityExerciseAnimationView: UIView {
             return
         }
 
-        startCompletionPolling(controller: controller,
-                               completion: completion,
-                               token: token)
+        startCompletionPolling(completion: completion, token: token)
     }
 
     // MARK: - Completion polling
 
-    /// Проверяет завершение одноразовой анимации.
-    ///
-    /// Защиты:
-    /// - `hasObservedPlaying` — принимаем `isComplete == true` только если
-    ///   хотя бы раз видели `isComplete == false` (защита от «фантомного»
-    ///   `true` сразу после `playAnimation`).
-    /// - `maxTicks` — через 30 секунд принудительно завершаем, чтобы не
-    ///   залипнуть на `.transition`, если анимация повреждена.
-    private func startCompletionPolling(controller: AnimationPlaybackController,
-                                        completion: @escaping () -> Void,
+    private func startCompletionPolling(completion: @escaping () -> Void,
                                         token: UUID) {
         stopCompletionPolling()
 
         completionHandler = completion
-        completionController = controller
         completionToken = token
 
-        var hasObservedPlaying = false
         var ticks = 0
-        let maxTicks = 300
+        let skipTicks = 3
+        let maxTicks = 50
 
         #if DEBUG
-        print("⏳ Polling started (token: \(token))")
+        print("⏳ Polling started (token: \(token), controllers: \(playbackControllers.count))")
         #endif
 
         completionTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
@@ -362,24 +355,13 @@ final class RealityExerciseAnimationView: UIView {
                 return
             }
 
-            let isComplete = controller.isComplete
+            if ticks <= skipTicks { return }
 
-            if !hasObservedPlaying, !isComplete {
-                hasObservedPlaying = true
+            let allComplete = self.playbackControllers.allSatisfy { $0.isComplete }
+
+            if allComplete {
                 #if DEBUG
-                print("▶️ Animation observed playing (tick \(ticks))")
-                #endif
-            }
-
-            #if DEBUG
-            if ticks % 5 == 0 {
-                print("🔍 tick \(ticks): isComplete=\(isComplete), hasPlayed=\(hasObservedPlaying)")
-            }
-            #endif
-
-            if hasObservedPlaying && isComplete {
-                #if DEBUG
-                print("✅ Animation completed at tick \(ticks)")
+                print("✅ All animations completed at tick \(ticks)")
                 #endif
                 self.stopCompletionPolling()
                 DispatchQueue.main.async { completion() }
@@ -401,19 +383,15 @@ final class RealityExerciseAnimationView: UIView {
         completionTimer?.invalidate()
         completionTimer = nil
         completionHandler = nil
-        completionController = nil
         completionToken = nil
     }
 
     // MARK: - Body swap
 
-    /// Меняет тело, применяя ту же анимацию, что играет сейчас.
-    /// Берём `currentAnimation` (а не `availableAnimations` нового тела),
-    /// чтобы не зависеть от того, какие клипы случайно попали в его USDZ.
     func swapBody(to bodyName: String, completion: ((Bool) -> Void)? = nil) {
         guard let oldEntity = currentModelEntity else { completion?(false); return }
+        let animations = currentAnimations
         let scene = currentSceneModel
-        let animation = currentAnimation
         let loop = currentLoop
 
         RealityExerciseCache.shared.loadEntity(named: bodyName) { [weak self] loaded in
@@ -432,11 +410,14 @@ final class RealityExerciseAnimationView: UIView {
             self.currentModelEntity = newBody
 
             var applied = false
-            if let animation = animation {
+            for animation in animations {
                 let resource = loop ? animation.repeat() : animation
                 let controller = newBody.playAnimation(resource,
                                                        transitionDuration: 0,
                                                        startsPaused: false)
+                if self.isRenderingPaused {
+                    controller.pause()
+                }
                 self.playbackControllers.append(controller)
                 applied = true
             }
@@ -454,10 +435,12 @@ final class RealityExerciseAnimationView: UIView {
     // MARK: - Rendering control
 
     func pauseRendering() {
+        isRenderingPaused = true
         playbackControllers.forEach { $0.pause() }
     }
 
     func resumeRendering() {
+        isRenderingPaused = false
         playbackControllers.forEach { $0.resume() }
     }
 

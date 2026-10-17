@@ -9,10 +9,12 @@ import Foundation
 
 struct DataSource {
     
-    static let f_lola_idle = SceneModel(name: "f_lola_idle", radiusOrbitMul: 2.5, azimuth: .pi / 8, elevation: .pi / 6, scaledCenterMulX: 0, scaledCenterMulY: 0.1, scaledCenterMulZ: 0)
-    static let f_sofie_idle = SceneModel(name: "f_sofie_idle", radiusOrbitMul: 2.5, azimuth: .pi / 8, elevation: .pi / 6, scaledCenterMulX: 0, scaledCenterMulY: 0.1, scaledCenterMulZ: 0)
-    static let m_adam_idle = SceneModel(name: "m_adam_idle", radiusOrbitMul: 2.5, azimuth: .pi / 8, elevation: .pi / 6, scaledCenterMulX: 0, scaledCenterMulY: 0.1, scaledCenterMulZ: 0)
-    //static let idle = SceneModel(name: "fa_rumba_dancing", radiusOrbitMul: 2.5, azimuth: .pi / 8, elevation: .pi / 6, scaledCenterMulX: 0, scaledCenterMulY: 0.1, scaledCenterMulZ: 0)
+    static let idleLola = SceneModel(name: "f_lola_idle", radiusOrbitMul: 2.7, azimuth: .pi / 8, elevation: .pi / 6, scaledCenterMulX: 0, scaledCenterMulY: 0.1, scaledCenterMulZ: 0)
+    static let idleSofie = SceneModel(name: "f_sofie_idle", radiusOrbitMul: 2.7, azimuth: .pi / 8, elevation: .pi / 6, scaledCenterMulX: 0, scaledCenterMulY: 0.1, scaledCenterMulZ: 0)
+    static let idleAdam = SceneModel(name: "m_adam_idle", radiusOrbitMul: 2.7, azimuth: .pi / 8, elevation: .pi / 6, scaledCenterMulX: 0, scaledCenterMulY: 0.1, scaledCenterMulZ: 0)
+    static let rumbaDancingLola = SceneModel(name: "f_lola_rumba_dancing", radiusOrbitMul: 3.0, azimuth: .pi / 8, elevation: .pi / 6, scaledCenterMulX: 0, scaledCenterMulY: 0.1, scaledCenterMulZ: 0)
+    static let rumbaDancingSofie = SceneModel(name: "f_sofie_rumba_dancing", radiusOrbitMul: 3.0, azimuth: .pi / 8, elevation: .pi / 6, scaledCenterMulX: 0, scaledCenterMulY: 0.1, scaledCenterMulZ: 0)
+    static let rumbaDancingAdam = SceneModel(name: "m_adam_rumba_dancing", radiusOrbitMul: 3.0, azimuth: .pi / 8, elevation: .pi / 6, scaledCenterMulX: 0, scaledCenterMulY: 0.1, scaledCenterMulZ: 0)
     static let victory = SceneModel(name: "f_sofie_rumba_dancing", radiusOrbitMul: 2.5, azimuth: .pi / 8, elevation: .pi / 7, scaledCenterMulX: 0, scaledCenterMulY: 0.3, scaledCenterMulZ: 0)
     
     static func getName(named: String) -> String {
@@ -25,10 +27,10 @@ struct DataSource {
 
     static let exercises: [ExerciseRawModel] = [
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: f_lola_idle,
+                 positions: ExerciseScenesModel(idle: idleLola,
                     idleToWorkoutScene: SceneModel(
                         name: "f_lola_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -36,7 +38,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "f_lola_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -44,7 +46,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "f_lola_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -52,10 +54,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: f_sofie_idle,
+                 positions: ExerciseScenesModel(idle: idleSofie,
                     idleToWorkoutScene: SceneModel(
                         name: "f_sofie_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -63,7 +65,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "f_sofie_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -71,7 +73,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "f_sofie_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -79,10 +81,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: m_adam_idle,
+                 positions: ExerciseScenesModel(idle: idleAdam,
                     idleToWorkoutScene: SceneModel(
                         name: "m_adam_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -90,7 +92,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "m_adam_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -98,7 +100,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "m_adam_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -106,10 +108,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: f_lola_idle,
+                 positions: ExerciseScenesModel(idle: idleLola,
                     idleToWorkoutScene: SceneModel(
                         name: "f_lola_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -117,7 +119,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "f_lola_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -125,7 +127,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "f_lola_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -133,10 +135,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: f_sofie_idle,
+                 positions: ExerciseScenesModel(idle: idleSofie,
                     idleToWorkoutScene: SceneModel(
                         name: "f_sofie_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -144,7 +146,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "f_sofie_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -152,7 +154,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "f_sofie_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -160,10 +162,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: m_adam_idle,
+                 positions: ExerciseScenesModel(idle: idleAdam,
                     idleToWorkoutScene: SceneModel(
                         name: "m_adam_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -171,7 +173,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "m_adam_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -179,7 +181,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "m_adam_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -187,10 +189,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: f_lola_idle,
+                 positions: ExerciseScenesModel(idle: idleLola,
                     idleToWorkoutScene: SceneModel(
                         name: "f_lola_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -198,7 +200,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "f_lola_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -206,7 +208,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "f_lola_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -214,10 +216,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: f_sofie_idle,
+                 positions: ExerciseScenesModel(idle: idleSofie,
                     idleToWorkoutScene: SceneModel(
                         name: "f_sofie_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -225,7 +227,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "f_sofie_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -233,7 +235,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "f_sofie_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -241,10 +243,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: m_adam_idle,
+                 positions: ExerciseScenesModel(idle: idleAdam,
                     idleToWorkoutScene: SceneModel(
                         name: "m_adam_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -252,7 +254,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "m_adam_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -260,7 +262,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "m_adam_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -268,10 +270,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: f_lola_idle,
+                 positions: ExerciseScenesModel(idle: idleLola,
                     idleToWorkoutScene: SceneModel(
                         name: "f_lola_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -279,7 +281,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "f_lola_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -287,7 +289,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "f_lola_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -295,10 +297,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: f_sofie_idle,
+                 positions: ExerciseScenesModel(idle: idleSofie,
                     idleToWorkoutScene: SceneModel(
                         name: "f_sofie_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -306,7 +308,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "f_sofie_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -314,7 +316,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "f_sofie_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -322,10 +324,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: m_adam_idle,
+                 positions: ExerciseScenesModel(idle: idleAdam,
                     idleToWorkoutScene: SceneModel(
                         name: "m_adam_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -333,7 +335,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "m_adam_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -341,7 +343,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "m_adam_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -349,10 +351,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: f_lola_idle,
+                 positions: ExerciseScenesModel(idle: idleLola,
                     idleToWorkoutScene: SceneModel(
                         name: "f_lola_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -360,7 +362,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "f_lola_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -368,7 +370,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "f_lola_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -376,10 +378,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: f_sofie_idle,
+                 positions: ExerciseScenesModel(idle: idleSofie,
                     idleToWorkoutScene: SceneModel(
                         name: "f_sofie_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -387,7 +389,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "f_sofie_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -395,7 +397,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "f_sofie_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -403,10 +405,10 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     isWorkoutReversed: false)),
         ExerciseRawModel(name: getName(named: "pushup"), description: getDescription(named: "pushup"),
-                 positions: ExerciseScenesModel(idle: m_adam_idle,
+                 positions: ExerciseScenesModel(idle: idleAdam,
                     idleToWorkoutScene: SceneModel(
                         name: "m_adam_pushup_b",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -414,7 +416,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutScene: SceneModel(
                         name: "m_adam_pushup",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,
@@ -422,7 +424,7 @@ struct DataSource {
                         scaledCenterMulZ: 0),
                     workoutToIdleScene: SceneModel(
                         name: "m_adam_pushup_e",
-                        radiusOrbitMul: 2.5,
+                        radiusOrbitMul: 2.7,
                         azimuth: .pi / 8,
                         elevation: .pi / 4,
                         scaledCenterMulX: 0,

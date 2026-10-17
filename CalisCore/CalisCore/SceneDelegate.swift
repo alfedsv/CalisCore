@@ -31,6 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     /// Создаёт основной навигационный стек приложения.
     private func makeMainNavigationController() -> UINavigationController {
+        //let rootViewController = CharacterCarouselViewController()
         let rootViewController = SetupViewController()
         let navController = UINavigationController(rootViewController: rootViewController)
         return navController
