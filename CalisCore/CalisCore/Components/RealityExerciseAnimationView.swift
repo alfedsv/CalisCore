@@ -252,12 +252,6 @@ final class RealityExerciseAnimationView: UIView {
 
     // MARK: - Animation start
 
-    /// Запускает анимации с учётом режима:
-    /// - `loop: true` — только **одна** (последняя). Mixamo/Blender кладёт
-    ///   `[rest_pose, real_action]`; одновременное воспроизведение удваивает
-    ///   skinning-нагрузку и даёт заметные тормоза. Визуально «живой» — последний.
-    /// - `loop: false` — все клипы. Completion ждёт завершения каждого.
-    ///   Переходы короткие, двойная нагрузка в течение 1–2 секунд не заметна.
     private func startAnimations(entity: Entity,
                                  loop: Bool,
                                  completion: (() -> Void)?,
@@ -288,10 +282,8 @@ final class RealityExerciseAnimationView: UIView {
         // Выбираем набор клипов в зависимости от режима.
         let toPlay: [AnimationResource]
         if loop {
-            // Loop: только последний (реальная анимация).
             toPlay = [animations.last!]
         } else {
-            // Transition: все клипы — completion ждёт самый длинный.
             toPlay = animations
         }
 
@@ -313,12 +305,18 @@ final class RealityExerciseAnimationView: UIView {
         print("▶️ playing \(playbackControllers.count) controller(s)")
         #endif
 
+        // ⬇️ ВОТ ОНА — разворачивает completion для всего кода ниже,
+        // включая замыкание внутри `if loop`.
         guard let completion = completion else { return }
 
         if loop {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self, self.transitionToken == token else { return }
+            if Thread.isMainThread {
                 completion()
+            } else {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self, self.transitionToken == token else { return }
+                    completion()
+                }
             }
             return
         }
@@ -337,13 +335,13 @@ final class RealityExerciseAnimationView: UIView {
 
         var ticks = 0
         let skipTicks = 3
-        let maxTicks = 50
+        let maxTicks = 150
 
         #if DEBUG
         print("⏳ Polling started (token: \(token), controllers: \(playbackControllers.count))")
         #endif
 
-        completionTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+        completionTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 30.0, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             ticks += 1
 
@@ -364,7 +362,9 @@ final class RealityExerciseAnimationView: UIView {
                 print("✅ All animations completed at tick \(ticks)")
                 #endif
                 self.stopCompletionPolling()
-                DispatchQueue.main.async { completion() }
+                // Timer.scheduledTimer уже на главном потоке — вызываем напрямую,
+                // без DispatchQueue.main.async (экономия ~16 мс).
+                completion()
                 return
             }
 
@@ -373,7 +373,7 @@ final class RealityExerciseAnimationView: UIView {
                 print("⏰ Hard timeout — forcing completion")
                 #endif
                 self.stopCompletionPolling()
-                DispatchQueue.main.async { completion() }
+                completion()
                 return
             }
         }
@@ -456,6 +456,11 @@ final class RealityExerciseAnimationView: UIView {
         updateCameraPosition(animated: false)
     }
 
+    /// Пересчитывает позицию камеры с учётом текущего азимута.
+    ///
+    /// - Parameter animated: `true` — плавно перейти к новой позиции
+    ///   (для смены сцены: idle ↔ workout, transition и т.п.).
+    ///   `false` — поставить мгновенно (первый показ, слайдер азимута).
     private func updateCameraPosition(animated: Bool) {
         guard let scene = currentSceneModel, let bounds = currentBounds else { return }
 
@@ -471,13 +476,51 @@ final class RealityExerciseAnimationView: UIView {
         let radiusOrbit = radius * scene.radiusOrbitMul
         let elevation = scene.elevation
 
-        pivotEntity.position = lookAtTarget
-        pivotEntity.orientation = simd_quatf(angle: effectiveAzimuth, axis: [0, 1, 0])
-
         let localY = radiusOrbit * sin(elevation)
         let localZ = radiusOrbit * cos(elevation)
-        cameraEntity.position = SIMD3<Float>(0, localY, localZ)
-        cameraEntity.orientation = simd_quatf(angle: -elevation, axis: [1, 0, 0])
+
+        // Целевые трансформы.
+        let pivotRotation = simd_quatf(angle: effectiveAzimuth, axis: [0, 1, 0])
+        let cameraRotation = simd_quatf(angle: -elevation, axis: [1, 0, 0])
+        let cameraPosition = SIMD3<Float>(0, localY, localZ)
+
+        if animated {
+            // Плавный переход между сценами: разные elevation, scaledCenterMulY
+            // и radiusOrbitMul у idle / workout / transition — без анимации
+            // камера «прыгает» и выглядит как дёрганье.
+            let pivotTransform = Transform(
+                scale: pivotEntity.scale,
+                rotation: pivotRotation,
+                translation: lookAtTarget
+            )
+            pivotEntity.move(
+                to: pivotTransform,
+                relativeTo: pivotEntity.parent,
+                duration: 0.25,
+                timingFunction: .easeInOut
+            )
+
+            let cameraTransform = Transform(
+                scale: cameraEntity.scale,
+                rotation: cameraRotation,
+                translation: cameraPosition
+            )
+            cameraEntity.move(
+                to: cameraTransform,
+                relativeTo: cameraEntity.parent,
+                duration: 0.25,
+                timingFunction: .easeInOut
+            )
+        } else {
+            // Мгновенно: первый показ или перетаскивание слайдера.
+            // Для слайдера — критично, потому что valueChanged срабатывает
+            // каждый кадр, и анимировать каждый тик нет смысла.
+            pivotEntity.position = lookAtTarget
+            pivotEntity.orientation = pivotRotation
+
+            cameraEntity.position = cameraPosition
+            cameraEntity.orientation = cameraRotation
+        }
     }
 
     // MARK: - Helpers

@@ -31,7 +31,9 @@ final class CharacterCarouselViewModel: CharacterCarouselViewModelProtocol {
             Character(id: "char1", name: "Lola",  idleScene: DataSource.idleLola, danceScene: DataSource.rumbaDancingLola),
             Character(id: "char2", name: "Adam",   idleScene: DataSource.idleAdam, danceScene: DataSource.rumbaDancingAdam),
             Character(id: "char3", name: "Sofie", idleScene: DataSource.idleSofie, danceScene: DataSource.rumbaDancingSofie),
-
+            Character(id: "char4", name: "Jennifer",  idleScene: DataSource.idleJennifer, danceScene: DataSource.rumbaDancingJennifer),
+            Character(id: "char5", name: "Bryce",   idleScene: DataSource.idleBryce, danceScene: DataSource.rumbaDancingBryce),
+            Character(id: "char6", name: "David", idleScene: DataSource.idleDavid, danceScene: DataSource.rumbaDancingDavid),
         ]
     }
 

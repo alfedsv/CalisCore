@@ -153,9 +153,14 @@ final class RealityExerciseCache {
     ///   - completion: вызывается на главном потоке. Аргумент — шаблон
     ///     или `nil` при ошибке. **Не мутируйте** шаблон: клонируйте.
     func loadEntity(named name: String, completion: @escaping (Entity?) -> Void) {
-        // Быстрая проверка кеша — синхронная, под `withLock`.
+        // Быстрая проверка кэша — синхронная, под `withLock`.
         if let cached = lock.withLock({ cache[name] }) {
-            DispatchQueue.main.async { completion(cached) }
+            // Если уже на главном потоке — вызываем синхронно.
+            if Thread.isMainThread {
+                completion(cached)
+            } else {
+                DispatchQueue.main.async { completion(cached) }
+            }
             return
         }
 
